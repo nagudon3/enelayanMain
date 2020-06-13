@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".AccountActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:background="@color/colorPrimary"
+        android:orientation="vertical">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="User Account"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:textColor="@color/colorText"
+            android:layout_gravity="center"
+            android:padding="20dp"
+            />
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_marginTop="80dp"
+        android:layout_marginBottom="60dp"
+        android:layout_height="match_parent"
+        android:background="@color/colorText"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/manageAcc"
+            android:layout_width="match_parent"
+            android:layout_height="80dp"
+            android:layout_above="@+id/regFishermen"
+            android:background="@color/colorText"
+            android:clickable="true"
+            android:gravity="center"
+            android:text="Manage Account"
+            android:textAllCaps="false"
+            android:textColor="@color/colorPrimary"
+            android:textSize="22dp" />
+
+        <TextView
+            android:id="@+id/myPost"
+            android:layout_width="match_parent"
+            android:layout_height="80dp"
+            android:layout_marginTop="20dp"
+            android:background="@color/colorText"
+            android:clickable="true"
+            android:gravity="center"
+            android:text="My Post"
+            android:textAllCaps="false"
+            android:textColor="@color/colorPrimary"
+            android:textSize="22dp" />
+
+        <TextView
+            android:id="@+id/regSeller"
+            android:layout_width="match_parent"
+            android:layout_height="80dp"
+            android:layout_above="@+id/regFishermen"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="3dp"
+            android:background="@color/colorText"
+            android:clickable="true"
+            android:gravity="center"
+            android:text="Register as Seller"
+            android:textAllCaps="false"
+            android:textColor="@color/colorPrimary"
+            android:textSize="22dp" />
+
+        <TextView
+            android:id="@+id/regFishermen"
+            android:layout_width="match_parent"
+            android:layout_height="80dp"
+            android:layout_above="@+id/logoutBtn"
+            android:layout_marginTop="20dp"
+            android:background="@color/colorText"
+            android:clickable="true"
+            android:gravity="center"
+            android:text="I am a Fisherman"
+            android:textAllCaps="false"
+            android:textColor="@color/colorPrimary"
+            android:textSize="22dp" />
+
+        <TextView
+            android:id="@+id/logoutBtn"
+            android:layout_width="match_parent"
+            android:layout_height="69dp"
+            android:layout_above="@+id/bottomNav"
+            android:layout_marginTop="20dp"
+            android:background="@color/colorText"
+            android:gravity="center"
+            android:text="Logout"
+            android:textAllCaps="false"
+            android:textColor="@color/colorPrimary"
+            android:textSize="22dp" />
+    </LinearLayout>
+
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/bottomNav"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:itemBackground="@color/colorPrimary"
+        app:itemTextColor="@drawable/selector"
+        app:itemIconTint="@drawable/selector"
+        android:background="@color/colorPrimary"
+        app:menu="@menu/menu_nav"
+        android:layout_alignParentBottom="true"/>
+
+
+
+</RelativeLayout>

@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "860500574574",
+    "firebase_url": "https://enelayanks-bf502.firebaseio.com",
+    "project_id": "enelayanks-bf502",
+    "storage_bucket": "enelayanks-bf502.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:860500574574:android:3e0ca42cea6fa63b4a817f",
+        "android_client_info": {
+          "package_name": "com.unimas.enelayan2019"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "860500574574-ck154s7baa8kdcc20dd09gdn3vl19ta1.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.unimas.enelayan2019",
+            "certificate_hash": "634830370543520b05b068ec13f484bcd5124506"
+          }
+        },
+        {
+          "client_id": "860500574574-2475ct117nlja99nl0ogoq207d9n8oam.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDhrtum67KlNgYZKP5GyUgFzha8lMD6w1A"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "860500574574-2475ct117nlja99nl0ogoq207d9n8oam.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
