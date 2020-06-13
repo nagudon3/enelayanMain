@@ -59,7 +59,7 @@
         android:layout_height="303dp"
         android:layout_marginTop="40dp"
         android:layout_marginBottom="49dp"
-        android:background="@color/colorPrimary"
+        android:background="@color/colorText"
         android:scaleType="centerCrop"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -113,7 +113,7 @@
 
     <TextView
         android:id="@+id/selectImageText"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
         android:text="Click to select image"
@@ -121,7 +121,7 @@
         android:textSize="20dp"
         app:layout_constraintBottom_toTopOf="@+id/doneButton"
         app:layout_constraintEnd_toEndOf="@+id/postImage"
-        app:layout_constraintHorizontal_bias="0.491"
+        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/postImage"
         app:layout_constraintVertical_bias="0.576" />
