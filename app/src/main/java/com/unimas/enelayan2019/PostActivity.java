@@ -26,12 +26,19 @@ import android.widget.Toast;
 import android.widget.Toolbar;
 
 import com.bumptech.glide.Glide;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 import com.theartofdev.edmodo.cropper.CropImage;
+import com.unimas.enelayan2019.Model.Post;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -97,12 +104,7 @@ public class PostActivity extends AppCompatActivity {
         postImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (Build.VERSION.SDK_INT >= 22){
-                    checkAndRequestForPermissions();
-                }
-                else {
-                    openGallery();
-                }
+                checkAndRequestForPermissions();
             }
         });
     }
@@ -139,7 +141,62 @@ public class PostActivity extends AppCompatActivity {
                 addPostButton.setVisibility(View.INVISIBLE);
                 postProgress.setVisibility(View.VISIBLE);
 
+                if (!postTitle.getText().toString().isEmpty()
+                        && !postDescription.toString().isEmpty() && ImageURI !=null){
+                    StorageReference storageReference = FirebaseStorage.getInstance().getReference().child("post_images").child(user.getUid());
+                    final StorageReference imageFilePath = storageReference.child(postTitle.getText().toString());
+                    imageFilePath.putFile(ImageURI).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                        @Override
+                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                            imageFilePath.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                                @Override
+                                public void onSuccess(Uri uri) {
+                                    String imageDownloadLink = uri.toString();
 
+                                    Post post = new Post(postTitle.getText().toString(),
+                                            postDescription.getText().toString(),
+                                            imageDownloadLink,
+                                            user.getUid(),
+                                            user.getPhotoUrl().toString());
+
+                                    addPost(post);
+                                }
+                            }).addOnFailureListener(new OnFailureListener() {
+                                @Override
+                                public void onFailure(@NonNull Exception e) {
+                                    Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_SHORT);
+                                    addPostButton.setVisibility(View.VISIBLE);
+                                    postProgress.setVisibility(View.INVISIBLE);
+                                }
+                            });
+                        }
+                    });
+
+                }else {
+                    Toast.makeText(getApplicationContext(), "Please enter your post details", Toast.LENGTH_SHORT).show();
+                    addPostButton.setVisibility(View.VISIBLE);
+                    postProgress.setVisibility(View.INVISIBLE);
+                }
+
+            }
+        });
+
+    }
+
+    private void addPost(Post post) {
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference databaseReference = database.getReference().child("Posts").push();
+
+        String key = databaseReference.getKey();
+        post.setPostKey(key);
+
+        databaseReference.setValue(post).addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void aVoid) {
+                Toast.makeText(getApplicationContext(), "Post added!", Toast.LENGTH_SHORT).show();
+                postProgress.setVisibility(View.INVISIBLE);
+                addPostButton.setVisibility(View.VISIBLE);
+                popAddPost.dismiss();
             }
         });
 
