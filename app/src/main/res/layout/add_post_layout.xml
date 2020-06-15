@@ -2,9 +2,9 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:background="@color/colorPrimary"
+    android:background="@android:color/transparent"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="wrap_content">
 
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/userPics"
@@ -45,8 +45,8 @@
         android:layout_marginRight="10dp"
         android:background="@drawable/add_post_style"
         android:ems="10"
-        android:hint="Post Details"
         android:gravity="start|top"
+        android:hint="Post Details"
         android:inputType="textMultiLine"
         android:paddingLeft="10dp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -57,16 +57,12 @@
         android:id="@+id/postImage"
         android:layout_width="412dp"
         android:layout_height="303dp"
-        android:layout_marginTop="40dp"
-        android:layout_marginBottom="49dp"
+        android:layout_marginTop="20dp"
         android:background="@color/colorText"
-        android:scaleType="centerCrop"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/postDetails"
-        app:layout_constraintVertical_bias="0.0"
         tools:srcCompat="@tools:sample/backgrounds/scenic" />
 
     <ImageView

@@ -15,7 +15,7 @@ import com.google.firebase.auth.FirebaseAuth;
 
 public class AccountActivity extends AppCompatActivity {
     private BottomNavigationView botNav;
-    private TextView logoutButton;
+    private TextView logoutButton, manageAcc;
     FirebaseAuth mAuth;
 
     @Override
@@ -23,6 +23,16 @@ public class AccountActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_account);
         logoutButton = (TextView)findViewById(R.id.logoutBtn);
+        manageAcc = (TextView) findViewById(R.id.manageAcc);
+
+        manageAcc.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(AccountActivity.this, ManageAccountActivity.class);
+                startActivity(i);
+            }
+        });
+
         mAuth = FirebaseAuth.getInstance();
         botNav = findViewById(R.id.bottomNav);
         botNav.setSelectedItemId(R.id.account);
