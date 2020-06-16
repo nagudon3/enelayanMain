@@ -14,7 +14,9 @@
         android:roundIcon="@mipmap/app_logo_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".RegisterSellerActivity"></activity>
+        <activity android:name=".MyPostActivity"></activity>
+        <activity android:name=".RegisterFishermanActivity" />
+        <activity android:name=".RegisterSellerActivity" />
         <activity android:name=".ManageAccountActivity" />
         <activity
             android:name="com.theartofdev.edmodo.cropper.CropImageActivity"
