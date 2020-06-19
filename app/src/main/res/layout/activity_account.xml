@@ -24,7 +24,7 @@
     </LinearLayout>
 
 
-    <LinearLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_marginTop="80dp"
         android:layout_marginBottom="60dp"
@@ -43,63 +43,107 @@
             android:text="Manage Account"
             android:textAllCaps="false"
             android:textColor="@color/colorPrimary"
-            android:textSize="22dp" />
+            android:textSize="22dp"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:layout_editor_absoluteX="0dp" />
 
         <TextView
             android:id="@+id/myPost"
             android:layout_width="match_parent"
             android:layout_height="80dp"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="32dp"
             android:background="@color/colorText"
             android:clickable="true"
             android:gravity="center"
             android:text="My Post"
             android:textAllCaps="false"
             android:textColor="@color/colorPrimary"
-            android:textSize="22dp" />
+            android:textSize="22dp"
+            app:layout_constraintTop_toBottomOf="@+id/manageAcc"
+            tools:layout_editor_absoluteX="0dp" />
 
         <TextView
             android:id="@+id/regSeller"
             android:layout_width="match_parent"
             android:layout_height="80dp"
             android:layout_above="@+id/regFishermen"
-            android:layout_marginTop="20dp"
-            android:layout_marginBottom="3dp"
+            android:layout_marginTop="32dp"
             android:background="@color/colorText"
             android:clickable="true"
             android:gravity="center"
             android:text="Register as Seller"
             android:textAllCaps="false"
             android:textColor="@color/colorPrimary"
-            android:textSize="22dp" />
+            android:textSize="22dp"
+            app:layout_constraintTop_toBottomOf="@+id/myPost"
+            tools:layout_editor_absoluteX="16dp" />
+
+        <TextView
+            android:id="@+id/addProduct"
+            android:layout_width="match_parent"
+            android:layout_height="80dp"
+            android:layout_above="@+id/regFishermen"
+            android:layout_marginTop="32dp"
+            android:background="@color/colorText"
+            android:clickable="true"
+            android:gravity="center"
+            android:text="Add Product Listing"
+            android:textAllCaps="false"
+            android:textColor="@color/colorPrimary"
+            android:textSize="22dp"
+            android:visibility="invisible"
+            app:layout_constraintTop_toBottomOf="@+id/myPost"
+            tools:layout_editor_absoluteX="16dp" />
 
         <TextView
             android:id="@+id/regFishermen"
             android:layout_width="match_parent"
             android:layout_height="80dp"
             android:layout_above="@+id/logoutBtn"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="32dp"
             android:background="@color/colorText"
             android:clickable="true"
             android:gravity="center"
             android:text="I am a Fisherman"
             android:textAllCaps="false"
             android:textColor="@color/colorPrimary"
-            android:textSize="22dp" />
+            android:textSize="22dp"
+            app:layout_constraintTop_toBottomOf="@+id/regSeller"
+            tools:layout_editor_absoluteX="-16dp" />
+
+        <TextView
+            android:id="@+id/addWholesaleProduct"
+            android:layout_width="match_parent"
+            android:layout_height="80dp"
+            android:layout_above="@+id/logoutBtn"
+            android:layout_marginTop="32dp"
+            android:background="@color/colorText"
+            android:clickable="true"
+            android:gravity="center"
+            android:text="Add Wholesale Product"
+            android:textAllCaps="false"
+            android:visibility="invisible"
+            android:textColor="@color/colorPrimary"
+            android:textSize="22dp"
+            app:layout_constraintTop_toBottomOf="@+id/regSeller"
+            tools:layout_editor_absoluteX="-16dp" />
 
         <TextView
             android:id="@+id/logoutBtn"
             android:layout_width="match_parent"
             android:layout_height="69dp"
             android:layout_above="@+id/bottomNav"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="32dp"
             android:background="@color/colorText"
             android:gravity="center"
             android:text="Logout"
             android:textAllCaps="false"
             android:textColor="@color/colorPrimary"
-            android:textSize="22dp" />
-    </LinearLayout>
+            android:textSize="22dp"
+            app:layout_constraintTop_toBottomOf="@+id/regFishermen"
+            tools:layout_editor_absoluteX="0dp"
+            tools:ignore="NotSibling" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottomNav"

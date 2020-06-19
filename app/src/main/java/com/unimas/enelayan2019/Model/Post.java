@@ -8,17 +8,19 @@ public class Post {
     private String details;
     private String image;
     private String userId;
+    private String userName;
     private String userPics;
     private Object timeStamp;
 
     public Post() {
     }
 
-    public Post(String title, String details, String image, String userId, String userPics) {
+    public Post(String title, String details, String image, String userId, String userName, String userPics) {
         this.title = title;
         this.details = details;
         this.image = image;
         this.userId = userId;
+        this.userName = userName;
         this.userPics = userPics;
         this.timeStamp = ServerValue.TIMESTAMP;
 
@@ -62,6 +64,14 @@ public class Post {
 
     public void setUserId(String userId) {
         this.userId = userId;
+    }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
     }
 
     public String getUserPics() {

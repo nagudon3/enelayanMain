@@ -5,6 +5,8 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.Manifest;
 import android.app.Dialog;
@@ -16,6 +18,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
@@ -32,13 +35,20 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.theartofdev.edmodo.cropper.CropImage;
+import com.unimas.enelayan2019.Adapters.PostAdapter;
 import com.unimas.enelayan2019.Model.Post;
+import com.unimas.enelayan2019.Model.PostViewer;
+
+import java.util.ArrayList;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -54,6 +64,12 @@ public class PostActivity extends AppCompatActivity {
     private ProgressBar postProgress;
     private Uri ImageURI;
     private TextView selectImageText;
+    private RecyclerView recyclerView;
+    private PostAdapter postAdapter;
+    private DatabaseReference reference;
+    private ArrayList<Post> postArrayList;
+    private String currentUserId;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,6 +78,36 @@ public class PostActivity extends AppCompatActivity {
 
         initPopup();
         selectPostImage();
+
+        mAuth = FirebaseAuth.getInstance();
+        user = mAuth.getCurrentUser();
+        currentUserId = user.getUid();
+
+        reference = FirebaseDatabase.getInstance().getReference().child("Posts");
+        recyclerView = (RecyclerView) findViewById(R.id.postRV);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        postArrayList = new ArrayList<>();
+
+//        reference.orderByChild("userId").equalTo(currentUserId).addValueEventListener(new ValueEventListener() {
+        reference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for (DataSnapshot dataSnapshot1:dataSnapshot.getChildren()){
+//                    if (dataSnapshot1.child(currentUserId).exists()){
+//
+//                    }
+                    Post post = dataSnapshot1.getValue(Post.class);
+                    postArrayList.add(post);
+                }
+                postAdapter = new PostAdapter(PostActivity.this, postArrayList);
+                recyclerView.setAdapter(postAdapter);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                Toast.makeText(getApplicationContext(), "Nothing here!", Toast.LENGTH_SHORT).show();
+            }
+        });
 
         fab = (FloatingActionButton) findViewById(R.id.addPost);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -157,6 +203,7 @@ public class PostActivity extends AppCompatActivity {
                                             postDescription.getText().toString(),
                                             imageDownloadLink,
                                             user.getUid(),
+                                            user.getDisplayName(),
                                             user.getPhotoUrl().toString());
 
                                     addPost(post);

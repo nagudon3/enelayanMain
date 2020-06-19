@@ -31,6 +31,7 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
+import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
@@ -53,7 +54,7 @@ public class RegisterActivity extends AppCompatActivity {
     private Object JSONObject;
     private FirebaseAuth mAuth;
     private ProgressBar progressBar;
-    Uri ImageURI;
+    private Uri ImageURI;
     int PReqCode = 1;
     int REQUESTCODE = 1;
     public Boolean upload;
@@ -85,7 +86,6 @@ public class RegisterActivity extends AppCompatActivity {
                 else {
                     openGallery();
                 }
-                upload = true;
             }
         });
 
@@ -110,11 +110,6 @@ public class RegisterActivity extends AppCompatActivity {
             }
         });
     }
-
-    private void openGallery(){
-        CropImage.activity().start(RegisterActivity.this);
-    }
-
     private void checkAndRequestForPermissions(){
         if (ContextCompat.checkSelfPermission(RegisterActivity.this,
                 Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED){
@@ -131,6 +126,11 @@ public class RegisterActivity extends AppCompatActivity {
         }
     }
 
+
+    private void openGallery(){
+        CropImage.activity().start(RegisterActivity.this);
+    }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -140,6 +140,7 @@ public class RegisterActivity extends AppCompatActivity {
             if (resultCode==RESULT_OK){
                 ImageURI = result.getUri();
                 uploadImage.setImageURI(ImageURI);
+                upload = true;
             }else if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE){
                 Exception e = result.getError();
                 Toast.makeText(RegisterActivity.this, "Possible error occured is " +e, Toast.LENGTH_SHORT).show();
@@ -221,9 +222,12 @@ public class RegisterActivity extends AppCompatActivity {
                 imageFilePath.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                     @Override
                     public void onSuccess(Uri uri) {
+                        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference().child("Users");
+                        databaseReference.child(currentUser.getUid());
+
                         UserProfileChangeRequest profileUpdate = new UserProfileChangeRequest.Builder().
                                 setDisplayName(postName)
-                                .setPhotoUri(imageURI)
+                                .setPhotoUri(uri)
                                 .build();
 
                         currentUser.updateProfile(profileUpdate).addOnCompleteListener(new OnCompleteListener<Void>() {

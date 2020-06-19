@@ -35,11 +35,22 @@
             android:id="@+id/addPost"
             android:layout_gravity="bottom|end"
             android:layout_marginBottom="60dp"
+            android:elevation="1000dp"
+            android:translationZ="10dp"
             android:layout_marginRight="15dp"
             android:src="@drawable/ic_add_black_24dp"
             android:backgroundTint="@color/colorPrimary"
             tools:ignore="VectorDrawableCompat" />
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/postRV"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:translationZ="-5dp"
+        android:layout_marginTop="80dp"
+        android:layout_marginBottom="80dp"/>
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottomNav"

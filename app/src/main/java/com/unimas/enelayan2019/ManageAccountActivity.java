@@ -67,9 +67,9 @@ public class ManageAccountActivity extends AppCompatActivity {
         reference = database.getReference("Users").child(firebaseUser.getUid());
 
         Glide.with(ManageAccountActivity.this).load(firebaseUser.getPhotoUrl()).into(userImage);
+
         name.setText(firebaseUser.getDisplayName());
         email.setText(firebaseUser.getEmail());
-        phone.setText(firebaseUser.getPhoneNumber());
 
         reference.addValueEventListener(new ValueEventListener() {
             @Override

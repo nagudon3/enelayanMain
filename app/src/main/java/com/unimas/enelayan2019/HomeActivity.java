@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.widget.ImageView;
@@ -18,6 +19,7 @@ public class HomeActivity extends AppCompatActivity {
     private ImageView test;
     FirebaseAuth mAuth;
     FirebaseUser user;
+    Uri userImageUri;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,8 +29,9 @@ public class HomeActivity extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
         user = mAuth.getCurrentUser();
         test = (ImageView)findViewById(R.id.testImage);
+        userImageUri = user.getPhotoUrl();
 
-        Glide.with(HomeActivity.this).load(user.getPhotoUrl()).into(test);
+        Glide.with(HomeActivity.this).load(userImageUri).into(test);
 
         botNav = findViewById(R.id.bottomNav);
         botNav.setSelectedItemId(R.id.home);
