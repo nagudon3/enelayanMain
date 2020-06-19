@@ -19,10 +19,11 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.unimas.enelayan2019.Model.Post;
+import com.unimas.enelayan2019.Seller.AddProductActivity;
 
 public class AccountActivity extends AppCompatActivity {
     private BottomNavigationView botNav;
-    private TextView logoutButton, manageAcc, regSeller, regFisherman, myPost;
+    private TextView logoutButton, manageAcc, regSeller, regFisherman, myPost, addProduct;
     FirebaseAuth mAuth;
 
     @Override
@@ -34,6 +35,14 @@ public class AccountActivity extends AppCompatActivity {
         regSeller = (TextView) findViewById(R.id.regSeller);
         regFisherman = (TextView) findViewById(R.id.regFishermen);
         myPost = (TextView) findViewById(R.id.myPost);
+        addProduct = (TextView) findViewById(R.id.addProduct);
+
+        addProduct.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getApplicationContext(), AddProductActivity.class));
+            }
+        });
 
         regFisherman.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -112,13 +121,16 @@ public class AccountActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        final String a = "approved";
         final DatabaseReference fishermanReference = FirebaseDatabase.getInstance().getReference().child("Fisherman").child(mAuth.getCurrentUser().getUid());
         fishermanReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if (dataSnapshot.child("approvalStatus").getValue().equals(true)){
                     Toast.makeText(AccountActivity.this, "Haha", Toast.LENGTH_SHORT).show();
+                    regSeller = (TextView) findViewById(R.id.regSeller);
+                    addProduct = (TextView) findViewById(R.id.addProduct);
+                    addProduct.setVisibility(View.VISIBLE);
+                    regSeller.setVisibility(View.INVISIBLE);
                 }else {
                     Toast.makeText(AccountActivity.this, "Sedih", Toast.LENGTH_SHORT).show();
                 }

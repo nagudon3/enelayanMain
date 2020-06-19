@@ -6,7 +6,146 @@
     android:layout_height="match_parent"
     tools:context=".Seller.AddProductActivity">
 
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <LinearLayout
+            android:layout_marginTop="80dp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+
+            android:padding="10dp"
+            android:orientation="vertical">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="20dp"
+                android:text="Product Information"
+                android:textColor="@color/colorPrimary"
+                android:id="@+id/title"
+                android:textSize="25dp"/>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="20dp"
+                >
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="200dp"
+                    android:id="@+id/productImage"
+                    android:background="@color/colorDark"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentTop="true"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerInParent="true"
+                    android:layout_marginStart="0dp"
+                    android:layout_marginLeft="0dp"
+                    android:layout_marginTop="82dp"
+                    android:layout_marginEnd="0dp"
+                    android:layout_marginRight="0dp"
+                    android:gravity="center"
+                    android:text="Click to upload Image"
+                    android:textColor="@color/colorText"
+                    android:textSize="20dp" />
+            </RelativeLayout>
+
+                <EditText
+                    android:id="@+id/productName"
+                    android:layout_width="match_parent"
+                    android:layout_marginBottom="20dp"
+                    android:layout_height="50dp"
+                    android:background="@drawable/text_input_black_border"
+                    android:hint="Product Name"
+                    android:gravity="center"/>
+
+                <EditText
+                    android:id="@+id/pricePerKg"
+                    android:layout_width="match_parent"
+                    android:layout_marginBottom="20dp"
+                    android:layout_height="50dp"
+                    android:background="@drawable/text_input_black_border"
+                    android:hint="Price per kg (RM)"
+                    android:gravity="center"/>
+
+                <EditText
+                    android:id="@+id/sellingArea"
+                    android:layout_width="match_parent"
+                    android:gravity="center"
+                    android:layout_marginBottom="20dp"
+                    android:layout_height="50dp"
+                    android:background="@drawable/text_input_black_border"
+                    android:hint="Selling Area" />
+                <EditText
+                    android:id="@+id/amountAvailable"
+                    android:layout_width="match_parent"
+                    android:layout_marginBottom="20dp"
+                    android:gravity="center"
+                    android:layout_height="50dp"
+                    android:background="@drawable/text_input_black_border"
+                    android:hint="Amount Available (Kg)"/>
+            <RelativeLayout
+                android:layout_marginBottom="20dp"
+                android:layout_width="match_parent"
+                android:layout_height="50dp">
+
+                <TextView
+                    android:id="@+id/productCatLabel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:layout_marginBottom="13dp"
+                    android:text="Product Category"
+                    android:textSize="20dp" />
+
+                <Spinner
+                    android:id="@+id/categorySpinner"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentBottom="true"
+                    android:layout_marginStart="37dp"
+                    android:layout_marginLeft="53dp"
+                    android:layout_marginEnd="5dp"
+                    android:layout_marginRight="5dp"
+                    android:layout_marginBottom="13dp"
+                    android:layout_toRightOf="@+id/productCatLabel" />
+            </RelativeLayout>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="20dp"
+                android:textSize="20dp"
+                android:text="Payment Method:"/>
+            <CheckBox
+                android:id="@+id/isCod"
+                android:textSize="20dp"
+                android:layout_marginBottom="10dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Cash On Delivery"/>
+
+            <CheckBox
+                android:id="@+id/isPickup"
+                android:textSize="20dp"
+                android:layout_marginBottom="10dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Self-pickup"/>
+
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+
     <LinearLayout
+        android:id="@+id/linearLayout"
         android:layout_width="match_parent"
         android:layout_height="80dp"
         android:background="@color/colorPrimary"
@@ -25,6 +164,8 @@
             android:textSize="20sp"
             android:textStyle="bold" />
     </LinearLayout>
+
+
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

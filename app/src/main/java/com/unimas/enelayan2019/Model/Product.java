@@ -8,11 +8,13 @@ public class Product {
     private String productPricePerKg;
     private int amountAvailable;
     private String paymentMethod;
+    private String productImage;
 
     public Product() {
     }
 
-    public Product(String productId, String sellerId, String productCategory, String productName, String productPricePerKg, int amountAvailable, String paymentMethod) {
+    public Product(String productId, String sellerId, String productCategory,
+                   String productName, String productPricePerKg, int amountAvailable, String paymentMethod, String productImage) {
         this.productId = productId;
         this.sellerId = sellerId;
         this.productCategory = productCategory;
@@ -20,6 +22,7 @@ public class Product {
         this.productPricePerKg = productPricePerKg;
         this.amountAvailable = amountAvailable;
         this.paymentMethod = paymentMethod;
+        this.productImage = productImage;
     }
 
     public String getProductId() {
@@ -76,5 +79,13 @@ public class Product {
 
     public void setPaymentMethod(String paymentMethod) {
         this.paymentMethod = paymentMethod;
+    }
+
+    public String getProductImage() {
+        return productImage;
+    }
+
+    public void setProductImage(String productImage) {
+        this.productImage = productImage;
     }
 }
