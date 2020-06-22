@@ -120,6 +120,7 @@ public class AccountActivity extends AppCompatActivity {
     }
 
 
+
     //Edit onstart later for fisherman account and seller account
     @Override
     protected void onStart() {

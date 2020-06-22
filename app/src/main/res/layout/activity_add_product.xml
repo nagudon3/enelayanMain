@@ -176,15 +176,30 @@
                 android:text="Self-pickup"
                 android:textSize="20dp" />
 
-            <Button
-                android:id="@+id/submitProduct"
+            <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:background="@color/colorPrimary"
-                android:text="Submit"
-                android:textColor="@color/colorText"
-                android:textSize="20dp" />
+                android:layout_height="wrap_content">
+                <Button
+                    android:id="@+id/submitProduct"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:background="@color/colorPrimary"
+                    android:text="Submit"
+                    android:textColor="@color/colorText"
+                    android:textSize="20dp" />
+
+                <ProgressBar
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:layout_marginBottom="0dp"
+                    android:elevation="2dp"
+                    android:visibility="invisible"
+                    android:id="@+id/progressBar"/>
+            </RelativeLayout>
+
+
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
 

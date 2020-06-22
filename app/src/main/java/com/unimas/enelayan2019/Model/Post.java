@@ -50,7 +50,7 @@ public class Post {
         this.details = details;
     }
 
-    public String getImage() {
+public String getImage() {
         return image;
     }
 

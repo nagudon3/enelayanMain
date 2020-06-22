@@ -93,9 +93,6 @@ public class PostActivity extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 for (DataSnapshot dataSnapshot1:dataSnapshot.getChildren()){
-//                    if (dataSnapshot1.child(currentUserId).exists()){
-//
-//                    }
                     Post post = dataSnapshot1.getValue(Post.class);
                     postArrayList.add(post);
                 }

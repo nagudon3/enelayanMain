@@ -89,29 +89,7 @@ public class RegisterSellerActivity extends AppCompatActivity {
             userReference.addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                    users = dataSnapshot.getValue(Users.class);
-                    String sName = users.getName().toString();
-                    String sPhone = users.getPhone().toString();
-                    String sAddress = users.getAddress().toString();
-                    String sImage = mAuth.getCurrentUser().getPhotoUrl().toString();
 
-                    seller = new Seller(mAuth.getCurrentUser().getUid(), sName, sImage, sArea, sReason, sFishSource, sPhone, sAddress, approvalStatus);
-                    sellerReference.setValue(seller).addOnCompleteListener(new OnCompleteListener<Void>() {
-                        @Override
-                        public void onComplete(@NonNull Task<Void> task) {
-                            if (task.isSuccessful()){
-                                Toast.makeText(getApplicationContext(), "Your application will be processed", Toast.LENGTH_SHORT).show();
-                                progressBar.setVisibility(View.INVISIBLE);
-                                submitButton.setVisibility(View.VISIBLE);
-                            }else {
-                                Toast.makeText(getApplicationContext(), "Unsuccessful", Toast.LENGTH_SHORT).show();
-                            }
-                        }
-                    }).addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception e) {
-                        }
-                    });
                 }
 
                 @Override
@@ -119,28 +97,61 @@ public class RegisterSellerActivity extends AppCompatActivity {
 
                 }
             });
+//            userReference.addValueEventListener(new ValueEventListener() {
+//                @Override
+//                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+//                    users = dataSnapshot.getValue(Users.class);
+//                    String sName = users.getName();
+//                    String sPhone = users.getPhone();
+//                    String sAddress = users.getAddress();
+//                    String sImage = mAuth.getCurrentUser().getPhotoUrl().toString();
+//
+//                    seller = new Seller(mAuth.getCurrentUser().getUid(), sName, sImage, sArea, sReason, sFishSource, sPhone, sAddress, approvalStatus);
+//                    sellerReference.setValue(seller).addOnCompleteListener(new OnCompleteListener<Void>() {
+//                        @Override
+//                        public void onComplete(@NonNull Task<Void> task) {
+//                            if (task.isSuccessful()){
+//                                Toast.makeText(getApplicationContext(), "Your application will be processed", Toast.LENGTH_SHORT).show();
+//                                progressBar.setVisibility(View.INVISIBLE);
+//                                submitButton.setVisibility(View.VISIBLE);
+//                            }else {
+//                                Toast.makeText(getApplicationContext(), "Unsuccessful", Toast.LENGTH_SHORT).show();
+//                            }
+//                        }
+//                    }).addOnFailureListener(new OnFailureListener() {
+//                        @Override
+//                        public void onFailure(@NonNull Exception e) {
+//                        }
+//                    });
+//                }
+//
+//                @Override
+//                public void onCancelled(@NonNull DatabaseError databaseError) {
+//
+//                }
+//            });
         }
     }
 
-    @Override
-    protected void onStart() {
-        super.onStart();
-        FirebaseDatabase sellerDatabase = FirebaseDatabase.getInstance();
-        DatabaseReference sellerReference = sellerDatabase.getReference().child("Seller");
-
-        sellerReference.orderByChild("sellerId").equalTo(mAuth.getCurrentUser().getUid()).addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                if (dataSnapshot.exists()){
-                    Toast.makeText(RegisterSellerActivity.this, "You have registered for seller account", Toast.LENGTH_SHORT).show();
-                    startActivity(new Intent(getApplicationContext(), AccountActivity.class));
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });
-    }
+//    @Override
+//    protected void onStart() {
+//        super.onStart();
+//        FirebaseDatabase sellerDatabase = FirebaseDatabase.getInstance();
+//        DatabaseReference sellerReference = sellerDatabase.getReference().child("Seller");
+//
+//        sellerReference.orderByChild("sellerId").equalTo(mAuth.getCurrentUser().getUid()).addValueEventListener(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+//                if (dataSnapshot.exists()){
+//                    Toast.makeText(RegisterSellerActivity.this, "You have registered for seller account", Toast.LENGTH_SHORT).show();
+//                    startActivity(new Intent(getApplicationContext(), AccountActivity.class));
+//                }
+//            }
+//
+//            @Override
+//            public void onCancelled(@NonNull DatabaseError databaseError) {
+//
+//            }
+//        });
+//    }
 }

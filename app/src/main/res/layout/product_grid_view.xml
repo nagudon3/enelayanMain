@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="160dp"
+    android:id="@+id/productCV"
+    android:stretchMode="none"
+    android:elevation="10dp"
+    android:layout_height="190dp"
+    xmlns:cardview="http://schemas.android.com/apk/res-auto"
+    cardview:cardCornerRadius="10dp"
+    android:layout_margin="4dp">
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:id="@+id/productName"
+            android:text="Ikan Keli"
+            android:elevation="10dp"
+            android:textSize="18dp"
+            android:textAllCaps="true"
+            android:gravity="center"
+            android:textColor="@color/colorText"
+            android:background="@color/colorDark"
+            />
+
+        <ImageView
+            android:id="@+id/productImage"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentBottom="true"
+            android:background="@drawable/logo"
+            android:scaleType="centerCrop" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:id="@+id/productPricePerKg"
+            android:text="RM 20.00/KG"
+            android:translationZ="2dp"
+            android:textSize="18dp"
+            android:background="@color/colorPrimary"
+            android:layout_alignParentBottom="true"
+            android:textAllCaps="true"
+            android:gravity="center"
+            android:textColor="@color/colorText"/>
+    </RelativeLayout>
+
+</androidx.cardview.widget.CardView>

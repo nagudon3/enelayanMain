@@ -2,10 +2,10 @@
     <string name="app_name">e-Nelayan Kota Samarahan</string>
 
     <string-array name="product_category">
-    <item>Fresh Water Fish</item>
-    <item>Sea Fish</item>
-    <item>Prawn</item>
-    <item>Variants of Seafood</item>
-    <item>Dried Seafood</item>
+        <item>Fresh Water Fish</item>
+        <item>Sea Fish</item>
+        <item>Prawn</item>
+        <item>Variants of Seafood</item>
+        <item>Dried Seafood</item>
     </string-array>
 </resources>
