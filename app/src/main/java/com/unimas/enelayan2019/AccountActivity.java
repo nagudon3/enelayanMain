@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -24,6 +25,7 @@ import com.unimas.enelayan2019.Seller.AddProductActivity;
 public class AccountActivity extends AppCompatActivity {
     private BottomNavigationView botNav;
     private TextView logoutButton, manageAcc, regSeller, regFisherman, myPost, addProduct;
+    private ProgressBar loading;
     FirebaseAuth mAuth;
 
     @Override
@@ -36,6 +38,7 @@ public class AccountActivity extends AppCompatActivity {
         regFisherman = (TextView) findViewById(R.id.regFishermen);
         myPost = (TextView) findViewById(R.id.myPost);
         addProduct = (TextView) findViewById(R.id.addProduct);
+        loading = (ProgressBar) findViewById(R.id.loading);
 
         addProduct.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -126,13 +129,14 @@ public class AccountActivity extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if (dataSnapshot.child("approvalStatus").getValue().equals(true)){
-                    Toast.makeText(AccountActivity.this, "Haha", Toast.LENGTH_SHORT).show();
                     regSeller = (TextView) findViewById(R.id.regSeller);
                     addProduct = (TextView) findViewById(R.id.addProduct);
                     addProduct.setVisibility(View.VISIBLE);
                     regSeller.setVisibility(View.INVISIBLE);
+                    loading.setVisibility(View.INVISIBLE);
+
                 }else {
-                    Toast.makeText(AccountActivity.this, "Sedih", Toast.LENGTH_SHORT).show();
+                    loading.setVisibility(View.INVISIBLE);
                 }
             }
 

@@ -6,7 +6,7 @@ public class Product {
     private String productCategory;
     private String productName;
     private String productPricePerKg;
-    private int amountAvailable;
+    private String amountAvailable;
     private String paymentMethod;
     private String productImage;
 
@@ -14,7 +14,7 @@ public class Product {
     }
 
     public Product(String productId, String sellerId, String productCategory,
-                   String productName, String productPricePerKg, int amountAvailable, String paymentMethod, String productImage) {
+                   String productName, String productPricePerKg, String amountAvailable, String paymentMethod, String productImage) {
         this.productId = productId;
         this.sellerId = sellerId;
         this.productCategory = productCategory;
@@ -65,11 +65,11 @@ public class Product {
         this.productPricePerKg = productPricePerKg;
     }
 
-    public int getAmountAvailable() {
+    public String getAmountAvailable() {
         return amountAvailable;
     }
 
-    public void setAmountAvailable(int amountAvailable) {
+    public void setAmountAvailable(String amountAvailable) {
         this.amountAvailable = amountAvailable;
     }
 

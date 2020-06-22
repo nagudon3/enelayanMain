@@ -25,6 +25,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.unimas.enelayan2019.Model.Fisherman;
+import com.unimas.enelayan2019.Model.Seller;
 import com.unimas.enelayan2019.Model.Users;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -37,6 +38,7 @@ public class RegisterFishermanActivity extends AppCompatActivity {
     FirebaseAuth mAuth;
     FirebaseUser user;
     Fisherman fisherman;
+    Seller seller;
     Users users;
     private ProgressBar progressBar;
 
@@ -115,6 +117,7 @@ public class RegisterFishermanActivity extends AppCompatActivity {
                     String fAddress = users.getAddress().toString();
 
                     fisherman = new Fisherman(mAuth.getUid(), fName, fLicense, fArea, fPhone, fAddress, fYears, approvalStatus);
+                    //tambah seller
                     fishermanReference.setValue(fisherman).addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {

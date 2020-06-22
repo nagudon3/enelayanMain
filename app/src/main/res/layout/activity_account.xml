@@ -23,6 +23,13 @@
             />
     </LinearLayout>
 
+    <ProgressBar
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:translationZ="20dp"
+        android:padding="160dp"
+        android:id="@+id/loading"
+        android:background="@color/colorDark"/>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"

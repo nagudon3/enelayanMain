@@ -4,83 +4,39 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Seller.AddProductActivity">
-
-    <LinearLayout
-        android:id="@+id/linearLayout"
-        android:layout_width="match_parent"
-        android:layout_height="80dp"
-        android:background="@color/colorPrimary"
-        android:orientation="vertical"
-        android:translationZ="20dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentBottom="true"
-            android:layout_gravity="center"
-            android:layout_toEndOf="@+id/backBtn"
-            android:layout_toRightOf="@+id/backBtn"
-            android:padding="20dp"
-            android:text="Add New Products"
-            android:textColor="@color/colorText"
-            android:textSize="20sp"
-            android:textStyle="bold" />
-    </LinearLayout>
-
-    <ImageView
-        android:id="@+id/backBtn"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
-        android:layout_marginLeft="10dp"
-        android:translationZ="20dp"
-        app:layout_constraintBottom_toBottomOf="@+id/linearLayout"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/back_button_white"
-        tools:ignore="VectorDrawableCompat" />
-
+    tools:context=".Fisherman.AddWholesaleActivity">
 
     <androidx.core.widget.NestedScrollView
-        android:id="@+id/nestedScrollView"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-
         <LinearLayout
+            android:layout_marginTop="80dp"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginTop="80dp"
 
-            android:orientation="vertical"
-            android:padding="10dp">
-
+            android:padding="10dp"
+            android:orientation="vertical">
             <TextView
-                android:id="@+id/title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="20dp"
                 android:text="Product Information"
                 android:textColor="@color/colorPrimary"
-                android:textSize="25dp" />
+                android:id="@+id/title"
+                android:textSize="25dp"/>
 
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="20dp">
-
+                android:layout_marginBottom="20dp"
+                >
                 <ImageView
-                    android:id="@+id/productImage"
                     android:layout_width="match_parent"
                     android:layout_height="200dp"
-                    android:background="@color/colorDark" />
+                    android:id="@+id/productImage"
+                    android:background="@color/colorDark"/>
 
                 <TextView
-                    android:id="@+id/selectImageText"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentStart="true"
@@ -103,89 +59,88 @@
             <EditText
                 android:id="@+id/productName"
                 android:layout_width="match_parent"
-                android:layout_height="50dp"
                 android:layout_marginBottom="20dp"
+                android:layout_height="50dp"
                 android:background="@drawable/text_input_black_border"
-                android:gravity="center"
-                android:hint="Product Name" />
+                android:hint="Product Name"
+                android:gravity="center"/>
 
             <EditText
                 android:id="@+id/pricePerKg"
                 android:layout_width="match_parent"
-                android:layout_height="50dp"
                 android:layout_marginBottom="20dp"
+                android:layout_height="50dp"
                 android:background="@drawable/text_input_black_border"
-                android:gravity="center"
-                android:inputType="numberDecimal"
-                android:hint="Price per kg (RM)" />
+                android:hint="Price per kg (RM)"
+                android:gravity="center"/>
 
             <EditText
                 android:id="@+id/sellingArea"
                 android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:layout_marginBottom="20dp"
-                android:background="@drawable/text_input_black_border"
                 android:gravity="center"
+                android:layout_marginBottom="20dp"
+                android:layout_height="50dp"
+                android:background="@drawable/text_input_black_border"
                 android:hint="Selling Area" />
-
             <EditText
                 android:id="@+id/amountAvailable"
                 android:layout_width="match_parent"
-                android:layout_height="50dp"
                 android:layout_marginBottom="20dp"
-                android:background="@drawable/text_input_black_border"
                 android:gravity="center"
-                android:inputType="numberDecimal"
-                android:hint="Amount Available (Kg)" />
-
-            <TextView
-                android:id="@+id/productCatLabel"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true"
-                android:layout_marginBottom="13dp"
-                android:text="Product Category"
-                android:textSize="20dp" />
-
-            <Spinner
-                android:id="@+id/categorySpinner"
-                android:layout_width="match_parent"
                 android:layout_height="50dp"
-                android:layout_marginBottom="20dp" />
+                android:background="@drawable/text_input_black_border"
+                android:hint="Amount Available (Kg)"/>
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="20dp"
-                android:text="Payment Method:"
-                android:textSize="20dp" />
-
+                android:textSize="20dp"
+                android:text="Payment Method:"/>
             <CheckBox
                 android:id="@+id/isCod"
+                android:textSize="20dp"
+                android:layout_marginBottom="10dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="10dp"
-                android:text="Cash On Delivery"
-                android:textSize="20dp" />
+                android:text="Cash On Delivery"/>
 
             <CheckBox
                 android:id="@+id/isPickup"
+                android:textSize="20dp"
+                android:layout_marginBottom="10dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="10dp"
-                android:text="Self-pickup"
-                android:textSize="20dp" />
+                android:text="Self-pickup"/>
 
             <Button
-                android:id="@+id/submitProduct"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:background="@color/colorPrimary"
+                android:id="@+id/submitProduct"
                 android:text="Submit"
-                android:textColor="@color/colorText"
-                android:textSize="20dp" />
+                android:background="@color/colorPrimary"/>
+
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
 
+    <LinearLayout
+        android:id="@+id/linearLayout"
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:background="@color/colorPrimary"
+        android:orientation="vertical"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:padding="20dp"
+            android:text="Add Wholesale Product"
+            android:textColor="@color/colorText"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+    </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
