@@ -107,6 +107,7 @@ public class RegisterFishermanActivity extends AppCompatActivity {
             final FirebaseDatabase fishermanDatabase = FirebaseDatabase.getInstance();
             final DatabaseReference userReference = userDatabase.getReference().child("Users").child(user.getUid());
             final DatabaseReference fishermanReference = fishermanDatabase.getReference().child("Fisherman").child(user.getUid());
+            final String fImage = mAuth.getCurrentUser().getPhotoUrl().toString();
 
             userReference.addValueEventListener(new ValueEventListener() {
                 @Override
@@ -116,7 +117,7 @@ public class RegisterFishermanActivity extends AppCompatActivity {
                     String fPhone = users.getPhone().toString();
                     String fAddress = users.getAddress().toString();
 
-                    fisherman = new Fisherman(mAuth.getUid(), fName, fLicense, fArea, fPhone, fAddress, fYears, approvalStatus);
+                    fisherman = new Fisherman(mAuth.getUid(), fName, fLicense, fImage, fArea, fPhone, fAddress, fYears, approvalStatus);
                     //tambah seller
                     fishermanReference.setValue(fisherman).addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override

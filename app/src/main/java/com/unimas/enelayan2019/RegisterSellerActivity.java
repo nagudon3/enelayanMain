@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -15,14 +16,20 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.UserProfileChangeRequest;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.firestore.auth.User;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 import com.unimas.enelayan2019.Model.Fisherman;
 import com.unimas.enelayan2019.Model.Seller;
 import com.unimas.enelayan2019.Model.Users;
@@ -36,7 +43,6 @@ public class RegisterSellerActivity extends AppCompatActivity {
     private EditText sellingArea, fishSource, sellingReason;
     private Button submitButton;
     FirebaseAuth mAuth;
-    Users users;
     Seller seller;
     private ProgressBar progressBar;
 
@@ -66,6 +72,8 @@ public class RegisterSellerActivity extends AppCompatActivity {
         submitButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                submitButton.setVisibility(View.INVISIBLE);
+                progressBar.setVisibility(View.VISIBLE);
                 registerSeller();
             }
         });
@@ -89,6 +97,28 @@ public class RegisterSellerActivity extends AppCompatActivity {
             userReference.addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    Users users = dataSnapshot.getValue(Users.class);
+                    String sellerName = users.getName();
+                    String sellerImage = mAuth.getCurrentUser().getPhotoUrl().toString();
+                    String sellerPhone = users.getPhone();
+                    String sellerAddress = users.getAddress();
+
+                    Seller seller = new Seller(mAuth.getUid(), sellerName, sellerImage, sArea, sReason, sFishSource, sellerPhone, sellerAddress, approvalStatus);
+                    sellerReference.setValue(seller).addOnSuccessListener(new OnSuccessListener<Void>() {
+                        @Override
+                        public void onSuccess(Void aVoid) {
+                            Toast.makeText(RegisterSellerActivity.this, "Your application will be processed!", Toast.LENGTH_SHORT).show();
+                            submitButton.setVisibility(View.VISIBLE);
+                            progressBar.setVisibility(View.INVISIBLE);
+                        }
+                    }).addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            Toast.makeText(RegisterSellerActivity.this, "Error "+e.getMessage(), Toast.LENGTH_SHORT).show();
+                            submitButton.setVisibility(View.VISIBLE);
+                            progressBar.setVisibility(View.INVISIBLE);
+                        }
+                    });
 
                 }
 
@@ -133,25 +163,27 @@ public class RegisterSellerActivity extends AppCompatActivity {
         }
     }
 
-//    @Override
-//    protected void onStart() {
-//        super.onStart();
-//        FirebaseDatabase sellerDatabase = FirebaseDatabase.getInstance();
-//        DatabaseReference sellerReference = sellerDatabase.getReference().child("Seller");
-//
-//        sellerReference.orderByChild("sellerId").equalTo(mAuth.getCurrentUser().getUid()).addValueEventListener(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-//                if (dataSnapshot.exists()){
-//                    Toast.makeText(RegisterSellerActivity.this, "You have registered for seller account", Toast.LENGTH_SHORT).show();
-//                    startActivity(new Intent(getApplicationContext(), AccountActivity.class));
-//                }
-//            }
-//
-//            @Override
-//            public void onCancelled(@NonNull DatabaseError databaseError) {
-//
-//            }
-//        });
-//    }
+    @Override
+    protected void onStart() {
+        super.onStart();
+        FirebaseDatabase sellerDatabase = FirebaseDatabase.getInstance();
+        DatabaseReference sellerReference = sellerDatabase.getReference().child("Seller");
+
+        sellerReference.orderByChild("sellerId").equalTo(mAuth.getCurrentUser().getUid()).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()){
+                    Toast.makeText(RegisterSellerActivity.this, "You have registered for seller account", Toast.LENGTH_SHORT).show();
+                    startActivity(new Intent(getApplicationContext(), AccountActivity.class));
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+
 }

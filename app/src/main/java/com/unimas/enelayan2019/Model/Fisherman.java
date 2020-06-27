@@ -4,6 +4,7 @@ public class Fisherman {
     private String fishermanID;
     private String fishermanName;
     private String fishermanLicenseNumber;
+    private String fishermanImage;
     private String fishingArea;
     private String phoneNumber;
     private String address;
@@ -13,10 +14,11 @@ public class Fisherman {
     public Fisherman() {
     }
 
-    public Fisherman(String fishermanID, String fishermanName, String fishermanLicenseNumber, String fishingArea, String phoneNumber, String address, String years, Boolean approvalStatus) {
+    public Fisherman(String fishermanID, String fishermanName, String fishermanLicenseNumber, String fishermanImage, String fishingArea, String phoneNumber, String address, String years, Boolean approvalStatus) {
         this.fishermanID = fishermanID;
         this.fishermanName = fishermanName;
         this.fishermanLicenseNumber = fishermanLicenseNumber;
+        this.fishermanImage = fishermanImage;
         this.fishingArea = fishingArea;
         this.phoneNumber = phoneNumber;
         this.address = address;
@@ -46,6 +48,14 @@ public class Fisherman {
 
     public void setFishermanLicenseNumber(String fishermanLicenseNumber) {
         this.fishermanLicenseNumber = fishermanLicenseNumber;
+    }
+
+    public String getFishermanImage() {
+        return fishermanImage;
+    }
+
+    public void setFishermanImage(String fishermanImage) {
+        this.fishermanImage = fishermanImage;
     }
 
     public String getFishingArea() {

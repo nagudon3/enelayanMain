@@ -38,6 +38,14 @@
         app:srcCompat="@drawable/back_button_white"
         tools:ignore="VectorDrawableCompat" />
 
+    <ProgressBar
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="170dp"
+        android:elevation="20dp"
+        android:id="@+id/progressBar"
+        android:background="@color/colorDark"/>
+
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/nameContainer"
         android:layout_width="match_parent"

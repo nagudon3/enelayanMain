@@ -16,12 +16,16 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.signature.ObjectKey;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
@@ -30,9 +34,14 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 import com.theartofdev.edmodo.cropper.CropImage;
 import com.unimas.enelayan2019.Model.Users;
 import com.unimas.enelayan2019.Seller.AddProductActivity;
+
+import java.util.HashMap;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -41,7 +50,7 @@ public class ManageAccountActivity extends AppCompatActivity {
     private CircleImageView userImage;
     private Button doneBtn;
     private ImageView backBtn;
-
+    private ProgressBar progressBar;
     private FirebaseAuth mAuth;
     private FirebaseUser firebaseUser;
     private Users users;
@@ -62,6 +71,7 @@ public class ManageAccountActivity extends AppCompatActivity {
         userImage = (CircleImageView) findViewById(R.id.accountImage);
         doneBtn = (Button) findViewById(R.id.doneButton);
         backBtn = (ImageView) findViewById(R.id.backBtn);
+        progressBar = (ProgressBar)findViewById(R.id.progressBar);
 
         backBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -74,7 +84,7 @@ public class ManageAccountActivity extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
         firebaseUser = mAuth.getCurrentUser();
         database = FirebaseDatabase.getInstance();
-        reference = database.getReference("Users").child(firebaseUser.getUid());
+        reference = database.getReference("Users").child(mAuth.getUid());
 
         Glide.with(ManageAccountActivity.this).load(firebaseUser.getPhotoUrl()).into(userImage);
 
@@ -94,6 +104,8 @@ public class ManageAccountActivity extends AppCompatActivity {
                 users = dataSnapshot.getValue(Users.class);
                 address.setText(users.getAddress());
                 phone.setText(users.getPhone());
+
+                progressBar.setVisibility(View.INVISIBLE);
             }
 
             @Override
@@ -105,37 +117,209 @@ public class ManageAccountActivity extends AppCompatActivity {
         doneBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                doneBtn.setVisibility(View.INVISIBLE);
+                progressBar.setVisibility(View.VISIBLE);
+                Toast.makeText(ManageAccountActivity.this, "Updating..", Toast.LENGTH_SHORT).show();
                 final String uName = name.getText().toString();
-                final String uPhone = name.getText().toString();
-                final String uAddress = name.getText().toString();
+                final String uPhone = phone.getText().toString();
+                final String uEmail = email.getText().toString();
+                final String uAddress = address.getText().toString();
 
-                UserProfileChangeRequest userProfileChangeRequest = new UserProfileChangeRequest.Builder().setDisplayName(uName).build();
-                firebaseUser.updateProfile(userProfileChangeRequest).addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void aVoid) {
-                        mAuth.getCurrentUser().updateEmail(String.valueOf(email.getText()))
-                                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                updateInfo(uName, uPhone, uEmail, uAddress, ImageURI);
+
+
+//                FirebaseStorage storage = FirebaseStorage.getInstance();
+//                final StorageReference referencePhoto = storage.getReference().child("users_photos").child(mAuth.getCurrentUser().getUid());
+//                referencePhoto.putFile(ImageURI).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+//                    @Override
+//                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+//                        referencePhoto.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+//                            @Override
+//                            public void onSuccess(Uri uri) {
+//                                Toast.makeText(ManageAccountActivity.this, "Done", Toast.LENGTH_SHORT).show();
+//                            }
+//                        });
+//                    }
+//                });
+//                imageFilePath.putFile(ImageURI).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+//                    @Override
+//                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+//                        Toast.makeText(ManageAccountActivity.this, "Success", Toast.LENGTH_SHORT).show();
+//                    }
+//                });
+//                imageFilePath.putFile(ImageURI).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+//                    @Override
+//                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+//                        imageFilePath.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+//                        @Override
+//                        public void onSuccess(Uri uri) {
+//                            UserProfileChangeRequest userProfileChangeRequest = new UserProfileChangeRequest.
+//                                    Builder().
+//                                    setDisplayName(uName).
+//                                    setPhotoUri(uri).
+//                                    build();
+//                                    firebaseUser.updateProfile(userProfileChangeRequest).addOnSuccessListener(new OnSuccessListener<Void>() {
+//                                        @Override
+//                                        public void onSuccess(Void aVoid) {
+//                                        }
+//                                    });
+//
+//                        }
+//                    });
+//                }
+//             });
+            }
+       });
+    }
+
+    private void updateInfo(final String uName, final String uPhone, final String uEmail, final String uAddress, Uri imageURI) {
+        final FirebaseUser currentUser = mAuth.getCurrentUser();
+        StorageReference storageReference = FirebaseStorage.getInstance().getReference("users_photos");
+        final StorageReference imageFilePath = storageReference.child(currentUser.getUid());
+
+        if (imageURI!=null){
+            imageFilePath.putFile(imageURI).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                @Override
+                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                    imageFilePath.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                        @Override
+                        public void onSuccess(Uri uri) {
+                            DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference().child("Users");
+                            databaseReference.child(currentUser.getUid());
+
+                            UserProfileChangeRequest profileUpdate = new UserProfileChangeRequest.Builder().
+                                    setDisplayName(uName)
+                                    .setPhotoUri(uri)
+                                    .build();
+
+                            currentUser.updateProfile(profileUpdate).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                @Override
+                                public void onComplete(@NonNull Task<Void> task) {
+                                    if (task.isSuccessful()) {
+                                        reference = FirebaseDatabase.getInstance().getReference().child("Users").child(mAuth.getCurrentUser().getUid());
+                                        HashMap<String, Object> map = new HashMap<>();
+                                        map.put("address", uAddress);
+                                        map.put("name", uName);
+                                        map.put("phone", uPhone);
+                                        map.put("email", uEmail);
+
+                                        reference.updateChildren(map).addOnSuccessListener(new OnSuccessListener<Void>() {
+                                            @Override
+                                            public void onSuccess(Void aVoid) {
+                                                Toast.makeText(getApplicationContext(), "Profile updated!", Toast.LENGTH_LONG).show();
+                                                doneBtn.setVisibility(View.VISIBLE);
+                                                progressBar.setVisibility(View.INVISIBLE);
+                                                Intent intent = new Intent(ManageAccountActivity.this, AccountActivity.class);
+                                                startActivity(intent);
+                                            }
+                                        }).addOnFailureListener(new OnFailureListener() {
+                                            @Override
+                                            public void onFailure(@NonNull Exception e) {
+                                                Toast.makeText(getApplicationContext(), "Fail to update profile!", Toast.LENGTH_LONG).show();
+                                                doneBtn.setVisibility(View.VISIBLE);
+                                                progressBar.setVisibility(View.INVISIBLE);
+                                                Intent intent = new Intent(ManageAccountActivity.this, AccountActivity.class);
+                                                startActivity(intent);
+                                            }
+                                        });
+                                    }
+                                }
+                            });
+                        }
+                    });
+                }
+            });
+        }else {
+            DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference().child("Users");
+            databaseReference.child(currentUser.getUid());
+
+            UserProfileChangeRequest profileUpdate = new UserProfileChangeRequest.Builder().
+                    setDisplayName(uName)
+                    .build();
+
+            currentUser.updateProfile(profileUpdate).addOnCompleteListener(new OnCompleteListener<Void>() {
+                @Override
+                public void onComplete(@NonNull Task<Void> task) {
+                    if (task.isSuccessful()) {
+                        reference = FirebaseDatabase.getInstance().getReference().child("Users").child(mAuth.getCurrentUser().getUid());
+                        HashMap<String, Object> map = new HashMap<>();
+                        map.put("address", uAddress);
+                        map.put("name", uName);
+                        map.put("phone", uPhone);
+                        map.put("email", uEmail);
+
+                        reference.updateChildren(map).addOnSuccessListener(new OnSuccessListener<Void>() {
                             @Override
                             public void onSuccess(Void aVoid) {
                                 Toast.makeText(getApplicationContext(), "Profile updated!", Toast.LENGTH_LONG).show();
+                                doneBtn.setVisibility(View.VISIBLE);
+                                progressBar.setVisibility(View.INVISIBLE);
+                                Intent intent = new Intent(ManageAccountActivity.this, AccountActivity.class);
+                                startActivity(intent);
                             }
                         }).addOnFailureListener(new OnFailureListener() {
                             @Override
                             public void onFailure(@NonNull Exception e) {
-                                Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG).show();
+                                Toast.makeText(getApplicationContext(), "Fail to update profile!", Toast.LENGTH_LONG).show();
+                                doneBtn.setVisibility(View.VISIBLE);
+                                progressBar.setVisibility(View.INVISIBLE);
+                                Intent intent = new Intent(ManageAccountActivity.this, AccountActivity.class);
+                                startActivity(intent);
                             }
                         });
-                    }
-                }).addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG).show();
-                    }
-                });
-            }
-        });
 
+                    }
+                }
+            });
+        }
     }
+
+//                                firebaseUser.updateProfile(userProfileChangeRequest).addOnSuccessListener(new OnSuccessListener<Void>() {
+//                                    @Override
+//                                    public void onSuccess(Void aVoid) {
+//                                        mAuth.getCurrentUser().updateEmail(uEmail)
+//                                                .addOnSuccessListener(new OnSuccessListener<Void>() {
+//                                                    @Override
+//                                                    public void onSuccess(Void aVoid) {
+//                                                        reference = FirebaseDatabase.getInstance().getReference().child("Users").child(mAuth.getCurrentUser().getUid());
+//
+//                                                        HashMap<String, Object> map = new HashMap<>();
+//                                                        map.put("address", uAddress);
+//                                                        map.put("name", uName);
+//                                                        map.put("phone", uPhone);
+//                                                        map.put("email", uEmail);
+//
+//                                                        reference.updateChildren(map).addOnSuccessListener(new OnSuccessListener<Void>() {
+//                                                            @Override
+//                                                            public void onSuccess(Void aVoid) {
+//                                                                Toast.makeText(getApplicationContext(), "Profile updated!", Toast.LENGTH_LONG).show();
+//                                                                doneBtn.setVisibility(View.VISIBLE);
+//                                                                progressBar.setVisibility(View.INVISIBLE);
+//                                                            }
+//                                                        }).addOnFailureListener(new OnFailureListener() {
+//                                                            @Override
+//                                                            public void onFailure(@NonNull Exception e) {
+//                                                                Toast.makeText(getApplicationContext(), "Fail to update profile!", Toast.LENGTH_LONG).show();
+//                                                                doneBtn.setVisibility(View.VISIBLE);
+//                                                                progressBar.setVisibility(View.INVISIBLE);
+//                                                            }
+//                                                        });
+//                                                    }
+//                                                }).addOnFailureListener(new OnFailureListener() {
+//                                            @Override
+//                                            public void onFailure(@NonNull Exception e) {
+//                                                Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG).show();
+//                                            }
+//                                        });
+//                                    }
+//                                });
+//                            }
+//                        });
+//                    }
+//                });
+//            }
+//        }
+
 
     private void checkAndRequestForPermissions() {
         if (ContextCompat.checkSelfPermission(ManageAccountActivity.this,
@@ -175,3 +359,4 @@ public class ManageAccountActivity extends AppCompatActivity {
         }
     }
 }
+

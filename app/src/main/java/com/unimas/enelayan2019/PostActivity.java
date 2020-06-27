@@ -23,6 +23,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -52,7 +53,7 @@ import java.util.ArrayList;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
-public class PostActivity extends AppCompatActivity {
+public class PostActivity<var> extends AppCompatActivity {
     private BottomNavigationView botNav;
     private FloatingActionButton fab;
     private FirebaseAuth mAuth;
@@ -85,7 +86,11 @@ public class PostActivity extends AppCompatActivity {
 
         reference = FirebaseDatabase.getInstance().getReference().child("Posts");
         recyclerView = (RecyclerView) findViewById(R.id.postRV);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
+        linearLayoutManager.setReverseLayout(true);
+        linearLayoutManager.setStackFromEnd(true);
+        recyclerView.setLayoutManager(linearLayoutManager);
+
         postArrayList = new ArrayList<>();
 
 //        reference.orderByChild("userId").equalTo(currentUserId).addValueEventListener(new ValueEventListener() {

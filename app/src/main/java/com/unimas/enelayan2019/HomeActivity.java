@@ -103,5 +103,13 @@ public class HomeActivity extends AppCompatActivity {
             }
         });
     }
-
+//
+    @Override
+    protected void onStart() {
+        super.onStart();
+        if (user==null){
+            Intent i = new Intent(HomeActivity.this, MainActivity.class);
+            startActivity(i);
+        }
+    }
 }

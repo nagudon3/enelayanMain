@@ -24,7 +24,7 @@ import com.unimas.enelayan2019.Seller.AddProductActivity;
 
 public class AccountActivity extends AppCompatActivity {
     private BottomNavigationView botNav;
-    private TextView logoutButton, manageAcc, regSeller, regFisherman, myPost, addProduct;
+    private TextView logoutButton, manageAcc, regSeller, regFisherman, myPost, addProduct, addWholesale;
     private ProgressBar loading;
     FirebaseAuth mAuth;
 
@@ -39,6 +39,7 @@ public class AccountActivity extends AppCompatActivity {
         myPost = (TextView) findViewById(R.id.myPost);
         addProduct = (TextView) findViewById(R.id.addProduct);
         loading = (ProgressBar) findViewById(R.id.loading);
+        addWholesale = (TextView) findViewById(R.id.addWholesaleProduct);
 
         addProduct.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -121,30 +122,69 @@ public class AccountActivity extends AppCompatActivity {
 
 
 
-    //Edit onstart later for fisherman account and seller account
+//    //Edit onstart later for fisherman account and seller account
     @Override
     protected void onStart() {
         super.onStart();
-        final DatabaseReference fishermanReference = FirebaseDatabase.getInstance().getReference().child("Fisherman").child(mAuth.getCurrentUser().getUid());
-        fishermanReference.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                if (dataSnapshot.child("approvalStatus").getValue().equals(true)){
-                    regSeller = (TextView) findViewById(R.id.regSeller);
-                    addProduct = (TextView) findViewById(R.id.addProduct);
-                    addProduct.setVisibility(View.VISIBLE);
-                    regSeller.setVisibility(View.INVISIBLE);
-                    loading.setVisibility(View.INVISIBLE);
+        if (mAuth.getCurrentUser()!=null){
+            final DatabaseReference fishermanReference = FirebaseDatabase.getInstance().getReference().child("Fisherman").child(mAuth.getCurrentUser().getUid());
+            fishermanReference.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    if (dataSnapshot.exists()){
+                        if (dataSnapshot.child("approvalStatus").getValue().equals(true)){
+                            regSeller = (TextView) findViewById(R.id.regSeller);
+                            regFisherman = (TextView) findViewById(R.id.regFishermen);
+                            addWholesale = (TextView) findViewById(R.id.addWholesaleProduct);
+                            addProduct = (TextView) findViewById(R.id.addProduct);
+                            addProduct.setVisibility(View.VISIBLE);
+                            addWholesale.setVisibility(View.VISIBLE);
+                            regSeller.setVisibility(View.INVISIBLE);
+                            regFisherman.setVisibility(View.INVISIBLE);
+                            loading.setVisibility(View.INVISIBLE);
 
-                }else {
-                    loading.setVisibility(View.INVISIBLE);
+                        }else {
+                            loading.setVisibility(View.INVISIBLE);
+                        }
+                    }else
+                    {
+                        final DatabaseReference sellerRef = FirebaseDatabase.getInstance().getReference().child("Seller").child(mAuth.getCurrentUser().getUid());
+                        sellerRef.addValueEventListener(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                if (dataSnapshot.exists()){
+                                    if (dataSnapshot.child("approvalStatus").getValue().equals(true)){
+                                        regSeller = (TextView) findViewById(R.id.regSeller);
+                                        regFisherman = (TextView) findViewById(R.id.regFishermen);
+                                        addWholesale = (TextView) findViewById(R.id.addWholesaleProduct);
+                                        addProduct = (TextView) findViewById(R.id.addProduct);
+                                        addProduct.setVisibility(View.VISIBLE);
+                                        regSeller.setVisibility(View.INVISIBLE);
+                                        regFisherman.setVisibility(View.INVISIBLE);
+                                        loading.setVisibility(View.INVISIBLE);
+
+                                    }else {
+                                        loading.setVisibility(View.INVISIBLE);
+                                    }
+                                }
+                            }
+
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                            }
+                        });
+                        loading.setVisibility(View.INVISIBLE);
+                    }
+
                 }
-            }
 
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
 
-            }
-        });
+                }
+            });
+        }
+
     }
 }
