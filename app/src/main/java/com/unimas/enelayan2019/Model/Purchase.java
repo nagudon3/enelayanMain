@@ -12,13 +12,14 @@ public class Purchase {
     private String customerPhone;
     private String customerAddress;
     private String customerName;
+    private String paymentMethod;
 
     public Purchase() {
     }
 
     public Purchase(String purchaseId, String productId, String sellerId, String customerId,
                     String amountPurchased, String purchasePrice, String productName, String productImage,
-                    String customerPhone, String customerAddress, String customerName) {
+                    String customerPhone, String customerAddress, String customerName, String paymentMethod) {
         this.purchaseId = purchaseId;
         this.productId = productId;
         this.sellerId = sellerId;
@@ -30,6 +31,7 @@ public class Purchase {
         this.customerPhone = customerPhone;
         this.customerAddress = customerAddress;
         this.customerName = customerName;
+        this.paymentMethod = paymentMethod;
     }
 
     public String getPurchaseId() {
@@ -118,5 +120,13 @@ public class Purchase {
 
     public void setCustomerName(String customerName) {
         this.customerName = customerName;
+    }
+
+    public String getPaymentMethod() {
+        return paymentMethod;
+    }
+
+    public void setPaymentMethod(String paymentMethod) {
+        this.paymentMethod = paymentMethod;
     }
 }

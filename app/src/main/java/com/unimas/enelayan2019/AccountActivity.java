@@ -44,6 +44,21 @@ public class AccountActivity extends AppCompatActivity {
         custPurchaseList = (TextView)findViewById(R.id.custOrderList);
         addWholesale = (TextView) findViewById(R.id.addWholesaleProduct);
 
+        custPurchaseList.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(AccountActivity.this, CustomerPurchaseList.class));
+                Toast.makeText(AccountActivity.this, "Redirecting..", Toast.LENGTH_SHORT).show();
+            }
+        });
+        purchaseList.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(AccountActivity.this, MyPurchaseActivity.class));
+                Toast.makeText(AccountActivity.this, "Redirecting..", Toast.LENGTH_SHORT).show();
+            }
+        });
+
         addProduct.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -145,6 +160,8 @@ public class AccountActivity extends AppCompatActivity {
                             addWholesale.setVisibility(View.VISIBLE);
                             regSeller.setVisibility(View.GONE);
                             regFisherman.setVisibility(View.GONE);
+                            custPurchaseList = (TextView)findViewById(R.id.custOrderList);
+                            custPurchaseList.setVisibility(View.VISIBLE);
                             loading.setVisibility(View.GONE);
                             getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
 
@@ -166,6 +183,8 @@ public class AccountActivity extends AppCompatActivity {
                                         addProduct = (TextView) findViewById(R.id.addProduct);
                                         addProduct.setVisibility(View.VISIBLE);
                                         regSeller.setVisibility(View.GONE);
+                                        custPurchaseList = (TextView)findViewById(R.id.custOrderList);
+                                        custPurchaseList.setVisibility(View.VISIBLE);
                                         regFisherman.setVisibility(View.GONE);
                                         loading.setVisibility(View.GONE);
                                         getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);

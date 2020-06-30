@@ -13,8 +13,10 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -28,12 +30,16 @@ import com.unimas.enelayan2019.Adapters.ProductViewAdapter;
 import com.unimas.enelayan2019.Model.Cart;
 import com.unimas.enelayan2019.Model.Post;
 import com.unimas.enelayan2019.Model.Product;
+import com.unimas.enelayan2019.Model.Purchase;
+import com.unimas.enelayan2019.Model.Users;
 import com.unimas.enelayan2019.Model.test;
 
 import org.w3c.dom.Text;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class CartActivity extends AppCompatActivity {
     private BottomNavigationView botNav;
@@ -42,7 +48,6 @@ public class CartActivity extends AppCompatActivity {
     private ArrayList<Cart> cartArrayList;
     private Button checkOutButton;
     private FirebaseDatabase firebaseDatabase;
-    private ArrayList<Product> productArrayList;
     private TextView total, noCart;
 
     @Override
@@ -63,28 +68,9 @@ public class CartActivity extends AppCompatActivity {
         cartRv.setLayoutManager(linearLayoutManager);
         final double[] totalD = {0.0};
 
-        productArrayList = new ArrayList<>();
-
         cartArrayList = new ArrayList<>();
 
         firebaseDatabase = FirebaseDatabase.getInstance();
-        DatabaseReference productReference = firebaseDatabase.getReference().child("Products");
-
-
-        productReference.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                for (DataSnapshot dataSnapshot1: dataSnapshot.getChildren()){
-                    Product product = dataSnapshot1.getValue(Product.class);
-                    productArrayList.add(product);
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });
 
         final DatabaseReference cartRef= FirebaseDatabase.getInstance().getReference().child("Cart").child(FirebaseAuth.getInstance().getUid());
         cartRef.orderByChild("uid").equalTo(FirebaseAuth.getInstance().getUid()).addValueEventListener(new ValueEventListener() {
@@ -92,21 +78,19 @@ public class CartActivity extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if (dataSnapshot.exists()){
                     for (DataSnapshot dataSnapshot1:dataSnapshot.getChildren()){
-//                        if (dataSnapshot1.exists()){
                         Cart cart = dataSnapshot1.getValue(Cart.class);
                         cartArrayList.add(cart);
-//                        }
-                        for (int i = 0; i<cartArrayList.size(); i++){
-                            totalD[0] += Double.parseDouble(cartArrayList.get(i).getPrice());
-                        }
 
                         cartAdapter = new CartAdapter(cartArrayList, CartActivity.this);
                         cartRv.setAdapter(cartAdapter);
-
-                        total.setVisibility(View.VISIBLE);
-                        String totalString = String.format("%.2f", totalD[0]);
-                        total.setText("Total Amount: RM "+totalString);
                     }
+                    for (int i = 0; i<cartArrayList.size(); i++){
+                        totalD[0] += Double.parseDouble(cartArrayList.get(i).getPrice());
+                    }
+                    total.setVisibility(View.VISIBLE);
+                    String totalString = String.format("%.2f", totalD[0]);
+                    total.setText("Total Amount: RM "+totalString);
+
                 }else {
                     noCart.setVisibility(View.VISIBLE);
                     checkOutButton.setVisibility(View.GONE);
@@ -119,30 +103,60 @@ public class CartActivity extends AppCompatActivity {
 
             }
         });
+
+
         checkOutButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                for (int i = 0; i<cartArrayList.size(); i++){
-                    DatabaseReference purchaseRef = FirebaseDatabase.getInstance().getReference().child("Purchase").push();
-                    String cid = cartArrayList.get(i).getUid();
-                    String name = cartArrayList.get(i).getProductName();
-                    String pid = purchaseRef.getKey();
+                final String[] method = {""};
+                    DatabaseReference userRef = firebaseDatabase.getReference().child("Users").child(FirebaseAuth.getInstance().getUid());
+                    userRef.addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                            Users users = dataSnapshot.getValue(Users.class);
+                            String customerName = users.getName();
+                            String customerPhone = users.getPhone();
+                            String customerAddress = users.getAddress();
 
-                    test test = new test(pid, name, cid);
-                    purchaseRef.setValue(test).addOnSuccessListener(new OnSuccessListener<Void>() {
-                        @Override
-                        public void onSuccess(Void aVoid) {
-                            startActivity(new Intent(CartActivity.this, ConfirmOrderActivity.class));
-                            cartRef.removeValue();
-                            finish();
+                            for (int i = 0; i<cartArrayList.size(); i++){
+                                DatabaseReference purchaseRef = firebaseDatabase.getReference().child("Purchase").push();
+                                String purchaseId = purchaseRef.getKey();
+                                if (cartArrayList.get(i).getCod() == true){
+                                    method[0] = "COD";
+                                }else if (cartArrayList.get(i).getPickup() == true){
+                                    method[0] = "Pick-up";
+                                }
+                                Purchase purchase = new Purchase(
+                                        purchaseId,
+                                        cartArrayList.get(i).getProductId(),
+                                        cartArrayList.get(i).getSellerId(),
+                                        FirebaseAuth.getInstance().getUid(),
+                                        cartArrayList.get(i).getAmountOrdered(),
+                                        cartArrayList.get(i).getPrice(),
+                                        cartArrayList.get(i).getProductName(),
+                                        cartArrayList.get(i).getProductImage(),
+                                        customerPhone,
+                                        customerAddress,
+                                        customerName,
+                                        method[0]
+                                );
+                                purchaseRef.setValue(purchase).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<Void> task) {
+                                        startActivity(new Intent(CartActivity.this, ConfirmOrderActivity.class));
+                                        cartRef.removeValue();
+                                    }
+                                });
+                            }
+
                         }
-                    }).addOnFailureListener(new OnFailureListener() {
+
                         @Override
-                        public void onFailure(@NonNull Exception e) {
-                            Toast.makeText(CartActivity.this, "Failed", Toast.LENGTH_SHORT).show();
+                        public void onCancelled(@NonNull DatabaseError databaseError) {
+
                         }
                     });
-                }
+
             }
         });
 

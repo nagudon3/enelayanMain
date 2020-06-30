@@ -14,6 +14,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
@@ -60,12 +61,18 @@ public class HomeActivity extends AppCompatActivity {
         productReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                for (DataSnapshot dataSnapshot1: dataSnapshot.getChildren()){
-                    Product product = dataSnapshot1.getValue(Product.class);
-                    productArrayList.add(product);
+                if (dataSnapshot.exists()){
+                    for (DataSnapshot dataSnapshot1: dataSnapshot.getChildren()){
+                        Product product = dataSnapshot1.getValue(Product.class);
+                        productArrayList.add(product);
+                    }
+                    productViewAdapter = new ProductViewAdapter(HomeActivity.this, productArrayList);
+                    productRV.setAdapter(productViewAdapter);
                 }
-                productViewAdapter = new ProductViewAdapter(HomeActivity.this, productArrayList);
-                productRV.setAdapter(productViewAdapter);
+                else {
+                    Toast.makeText(HomeActivity.this, "Nothing yet.", Toast.LENGTH_SHORT).show();
+                }
+
             }
 
             @Override

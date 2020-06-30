@@ -56,6 +56,8 @@ public class ProductDetailsActivity extends AppCompatActivity{
     String prodName="";
     String prodPrice="";
     String prodImg="";
+    String sellerId="";
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -95,7 +97,7 @@ public class ProductDetailsActivity extends AppCompatActivity{
 
     }
 
-    private void initAddToCart(String prodId) {
+    private void initAddToCart(final String prodId) {
         addToCartDialog = new Dialog(this);
         addToCartDialog.setContentView(R.layout.add_product_to_cart);
         addToCartDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
@@ -117,6 +119,7 @@ public class ProductDetailsActivity extends AppCompatActivity{
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 Product product = dataSnapshot.getValue(Product.class);
                 amountAvailable.setText("Amount available: "+product.getAmountAvailable()+"kg");
+                sellerId = product.getSellerId();
                 String availableFromDb =  product.getAmountAvailable();
                 parsedAmount[0] = Double.parseDouble(availableFromDb);
                 if (dataSnapshot.child("cod").getValue().equals(true)){
@@ -125,8 +128,6 @@ public class ProductDetailsActivity extends AppCompatActivity{
                 if (dataSnapshot.child("pickup").getValue().equals(true)){
                     isPickup.setVisibility(View.VISIBLE);
                 }
-
-
             }
 
             @Override
@@ -170,12 +171,14 @@ public class ProductDetailsActivity extends AppCompatActivity{
                         Cart cart = new Cart(
                                 FirebaseAuth.getInstance().getUid(),
                                 cartId,
+                                prodId,
                                 prodName,
                                 prodImg,
                                 oAmount,
                                 oPrice,
                                 cod,
-                                pickup
+                                pickup,
+                                sellerId
                                 );
 
                         cartRef.setValue(cart).addOnCompleteListener(new OnCompleteListener<Void>() {

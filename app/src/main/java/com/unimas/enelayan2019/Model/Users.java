@@ -1,7 +1,7 @@
 package com.unimas.enelayan2019.Model;
 
 public class Users {
-    public String name, address, email, phone;
+    private String name, address, email, phone;
 
     public Users() {
     }
