@@ -2,9 +2,15 @@ package com.unimas.enelayan2019;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.Manifest;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
@@ -15,6 +21,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.unimas.enelayan2019.Adapters.CustomerPurchaseAdapter;
 import com.unimas.enelayan2019.Adapters.MyPurchaseAdapter;
 import com.unimas.enelayan2019.Model.Purchase;
 
@@ -25,7 +32,7 @@ public class CustomerPurchaseList extends AppCompatActivity {
     private ArrayList<Purchase> purchaseArrayList;
     private FirebaseDatabase firebaseDatabase;
     private TextView noItem;
-    private MyPurchaseAdapter myPurchaseAdapter;
+    private CustomerPurchaseAdapter myPurchaseAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,7 +43,6 @@ public class CustomerPurchaseList extends AppCompatActivity {
         noItem = findViewById(R.id.noItem);
 
         noItem.setVisibility(View.GONE);
-
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         linearLayoutManager.setReverseLayout(true);
         linearLayoutManager.setStackFromEnd(true);
@@ -52,10 +58,34 @@ public class CustomerPurchaseList extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if (dataSnapshot.exists()){
                     for (DataSnapshot dataSnapshot1:dataSnapshot.getChildren()){
-                        Purchase purchase = dataSnapshot1.getValue(Purchase.class);
+                        final Purchase purchase = dataSnapshot1.getValue(Purchase.class);
                         purchaseArrayList.add(purchase);
 
-                        myPurchaseAdapter = new MyPurchaseAdapter(purchaseArrayList, CustomerPurchaseList.this);
+                        final View.OnClickListener callListener = new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                if (ContextCompat.checkSelfPermission(CustomerPurchaseList.this, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED){
+                                    ActivityCompat.requestPermissions(CustomerPurchaseList.this, new String[] {Manifest.permission.CALL_PHONE}, 1);
+                                }else {
+                                    String custPhoneNumber = "tel:" + purchase.getCustomerPhone();
+                                    Intent intent = new Intent(Intent.ACTION_CALL);
+                                    intent.setData(Uri.parse(custPhoneNumber));
+                                    startActivity(intent);
+                                }
+                            }
+                        };
+
+                        View.OnClickListener wsListener = new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                String url = "https://wa.me/+6"+purchase.getCustomerPhone();
+                                Intent intent = new Intent(Intent.ACTION_VIEW);
+                                intent.setData(Uri.parse(url));
+                                startActivity(intent);
+                            }
+                        };
+
+                        myPurchaseAdapter = new CustomerPurchaseAdapter(purchaseArrayList, CustomerPurchaseList.this, callListener, wsListener);
                         customerPurchaseRV.setAdapter(myPurchaseAdapter);
                     }
 

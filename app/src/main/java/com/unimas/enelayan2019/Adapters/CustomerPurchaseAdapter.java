@@ -1,6 +1,10 @@
 package com.unimas.enelayan2019.Adapters;
 
+import android.Manifest;
 import android.content.Context;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -8,6 +12,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
@@ -20,10 +26,14 @@ import java.util.List;
 public class CustomerPurchaseAdapter extends RecyclerView.Adapter<CustomerPurchaseAdapter.CustomerPurchaseViewHolder> {
     List<Purchase> purchaseList;
     Context mContext;
+    View.OnClickListener callListener;
+    View.OnClickListener wsListener;
 
-    public CustomerPurchaseAdapter(List<Purchase> purchaseList, Context mContext) {
+    public CustomerPurchaseAdapter(List<Purchase> purchaseList, Context mContext, View.OnClickListener callListener, View.OnClickListener wsListener) {
         this.purchaseList = purchaseList;
         this.mContext = mContext;
+        this.callListener = callListener;
+        this.wsListener = wsListener;
     }
 
     @NonNull
@@ -34,13 +44,26 @@ public class CustomerPurchaseAdapter extends RecyclerView.Adapter<CustomerPurcha
     }
 
     @Override
-    public void onBindViewHolder(@NonNull CustomerPurchaseViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull CustomerPurchaseViewHolder holder, final int position) {
         holder.productName.setText(purchaseList.get(position).getProductName());
         double priceRounded = Double.parseDouble(purchaseList.get(position).getPurchasePrice());
         holder.orderPrice.setText("RM "+String.format("%.2f", priceRounded));
         holder.orderAmount.setText(purchaseList.get(position).getAmountPurchased()+" KG");
         holder.paymentMethod.setText(purchaseList.get(position).getPaymentMethod());
         Glide.with(mContext).load(purchaseList.get(position).getProductImage()).into(holder.productImage);
+//        holder.callButton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                if (ContextCompat.checkSelfPermission(mContext, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED){
+//                    ActivityCompat.requestPermissions(mContext, new String[] {Manifest.permission.CALL_PHONE}, 1);
+//                }else {
+//                    String custPhoneNumber = "tel:" + purchaseList.get(position).getCustomerPhone();
+//                    Intent intent = new Intent(Intent.ACTION_CALL);
+//                    intent.setData(Uri.parse(custPhoneNumber));
+//                    mContext.startActivity(intent);
+//                }
+//            }
+//        });
     }
 
     @Override
@@ -51,7 +74,7 @@ public class CustomerPurchaseAdapter extends RecyclerView.Adapter<CustomerPurcha
     public class CustomerPurchaseViewHolder extends RecyclerView.ViewHolder{
         TextView productName, orderPrice, orderAmount, paymentMethod;
         double totalPrice;
-        ImageView productImage;
+        ImageView productImage, callButton, wsButton;
 
         public CustomerPurchaseViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -60,6 +83,11 @@ public class CustomerPurchaseAdapter extends RecyclerView.Adapter<CustomerPurcha
             orderAmount = itemView.findViewById(R.id.amountOrdered);
             orderPrice = itemView.findViewById(R.id.price);
             paymentMethod = itemView.findViewById(R.id.paymentMethod);
+            callButton = itemView.findViewById(R.id.callButton);
+            wsButton = itemView.findViewById(R.id.wsButton);
+
+            callButton.setOnClickListener(callListener);
+            wsButton.setOnClickListener(wsListener);
         }
     }
 }
