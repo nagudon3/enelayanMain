@@ -110,7 +110,7 @@ public class ProductDetailsActivity extends AppCompatActivity{
         final double[] parsedAmount = {0.00};
 
 
-        final FirebaseDatabase database = FirebaseDatabase    .getInstance();
+        final FirebaseDatabase database = FirebaseDatabase.getInstance();
         final DatabaseReference productRef = database.getReference().child("Products").child(prodId);
         productRef.addValueEventListener(new ValueEventListener() {
             @Override
@@ -165,9 +165,11 @@ public class ProductDetailsActivity extends AppCompatActivity{
                     }else if (isCod.isChecked() && isPickup.isChecked()){
                         Toast.makeText(ProductDetailsActivity.this, "Pick only one payment method!", Toast.LENGTH_SHORT).show();
                     }else {
-                        DatabaseReference cartRef = database.getReference().child("Cart").push();
+                        DatabaseReference cartRef = database.getReference().child("Cart").child(FirebaseAuth.getInstance().getUid()).push();
+                        String cartId = cartRef.getKey();
                         Cart cart = new Cart(
                                 FirebaseAuth.getInstance().getUid(),
+                                cartId,
                                 prodName,
                                 prodImg,
                                 oAmount,

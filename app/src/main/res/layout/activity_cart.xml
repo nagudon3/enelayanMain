@@ -27,6 +27,18 @@
             android:textStyle="bold" />
     </LinearLayout>
 
+    <TextView
+        android:id="@+id/noCart"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="Your cart is empty."
+        android:visibility="gone"
+        android:textSize="30dp"
+        android:textColor="@color/colorPrimary"
+        app:layout_constraintBottom_toTopOf="@+id/bottomNav"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout5" />
+
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottomNav"
@@ -47,8 +59,32 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="1dp"
-        app:layout_constraintBottom_toTopOf="@+id/bottomNav"
+        android:elevation="-10dp"
+        android:paddingBottom="260dp"
+        app:layout_constraintBottom_toTopOf="@+id/checkoutButton"
         app:layout_constraintTop_toBottomOf="@+id/linearLayout5"
-        app:layout_constraintVertical_bias="0.0"
-        tools:layout_editor_absoluteX="-16dp" />
+        app:layout_constraintVertical_bias="0.0" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Total Amount: RM40"
+        android:textSize="20dp"
+        android:gravity="center"
+        android:textColor="@color/colorPrimary"
+        android:id="@+id/total"
+        android:layout_marginBottom="10dp"
+        app:layout_constraintBottom_toTopOf="@+id/checkoutButton" />
+
+    <Button
+        android:id="@+id/checkoutButton"
+        android:layout_width="260dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:background="@drawable/corner_button"
+        android:text="Checkout"
+        android:textColor="@color/colorText"
+        app:layout_constraintBottom_toTopOf="@+id/bottomNav"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"/>
 </androidx.constraintlayout.widget.ConstraintLayout>

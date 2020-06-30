@@ -14,7 +14,10 @@
         android:roundIcon="@mipmap/app_logo_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".Product.ProductDetailsActivity"></activity>
+        <activity android:name=".ConfirmOrderActivity"></activity>
+        <activity android:name=".CustomerPurchaseList" />
+        <activity android:name=".MyPurchaseActivity" />
+        <activity android:name=".Product.ProductDetailsActivity" />
         <activity android:name=".Fisherman.AddWholesaleActivity" />
         <activity android:name=".Seller.AddProductActivity" />
         <activity android:name=".PostDetailsActivity" />

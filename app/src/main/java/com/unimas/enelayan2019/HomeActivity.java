@@ -48,7 +48,9 @@ public class HomeActivity extends AppCompatActivity {
         setContentView(R.layout.activity_home);
 
         productRV = (RecyclerView)findViewById(R.id.productRV);
-        productRV.setLayoutManager(new GridLayoutManager(this, 2));
+        GridLayoutManager gridLayoutManager = new GridLayoutManager(this, 2);
+        productRV.setLayoutManager(gridLayoutManager);
+
         productArrayList = new ArrayList<>();
 
         firebaseDatabase = FirebaseDatabase.getInstance();

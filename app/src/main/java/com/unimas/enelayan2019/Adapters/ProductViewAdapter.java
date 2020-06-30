@@ -43,7 +43,8 @@ public class ProductViewAdapter extends RecyclerView.Adapter<ProductViewAdapter.
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
         holder.productName.setText(productList.get(position).getProductName());
-        holder.productPrice.setText(productList.get(position).getProductPricePerKg());
+        double pricePerKg = Double.parseDouble(productList.get(position).getProductPricePerKg());
+        holder.productPrice.setText("RM "+String.format("%.2f", pricePerKg)+" /KG");
         Glide.with(mContext).load(productList.get(position).getProductImage()).into(holder.productImage);
     }
 

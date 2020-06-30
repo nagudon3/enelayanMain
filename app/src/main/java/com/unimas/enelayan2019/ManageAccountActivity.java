@@ -126,48 +126,6 @@ public class ManageAccountActivity extends AppCompatActivity {
                 final String uAddress = address.getText().toString();
 
                 updateInfo(uName, uPhone, uEmail, uAddress, ImageURI);
-
-
-//                FirebaseStorage storage = FirebaseStorage.getInstance();
-//                final StorageReference referencePhoto = storage.getReference().child("users_photos").child(mAuth.getCurrentUser().getUid());
-//                referencePhoto.putFile(ImageURI).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-//                    @Override
-//                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-//                        referencePhoto.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-//                            @Override
-//                            public void onSuccess(Uri uri) {
-//                                Toast.makeText(ManageAccountActivity.this, "Done", Toast.LENGTH_SHORT).show();
-//                            }
-//                        });
-//                    }
-//                });
-//                imageFilePath.putFile(ImageURI).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-//                    @Override
-//                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-//                        Toast.makeText(ManageAccountActivity.this, "Success", Toast.LENGTH_SHORT).show();
-//                    }
-//                });
-//                imageFilePath.putFile(ImageURI).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-//                    @Override
-//                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-//                        imageFilePath.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-//                        @Override
-//                        public void onSuccess(Uri uri) {
-//                            UserProfileChangeRequest userProfileChangeRequest = new UserProfileChangeRequest.
-//                                    Builder().
-//                                    setDisplayName(uName).
-//                                    setPhotoUri(uri).
-//                                    build();
-//                                    firebaseUser.updateProfile(userProfileChangeRequest).addOnSuccessListener(new OnSuccessListener<Void>() {
-//                                        @Override
-//                                        public void onSuccess(Void aVoid) {
-//                                        }
-//                                    });
-//
-//                        }
-//                    });
-//                }
-//             });
             }
        });
     }
@@ -273,52 +231,6 @@ public class ManageAccountActivity extends AppCompatActivity {
             });
         }
     }
-
-//                                firebaseUser.updateProfile(userProfileChangeRequest).addOnSuccessListener(new OnSuccessListener<Void>() {
-//                                    @Override
-//                                    public void onSuccess(Void aVoid) {
-//                                        mAuth.getCurrentUser().updateEmail(uEmail)
-//                                                .addOnSuccessListener(new OnSuccessListener<Void>() {
-//                                                    @Override
-//                                                    public void onSuccess(Void aVoid) {
-//                                                        reference = FirebaseDatabase.getInstance().getReference().child("Users").child(mAuth.getCurrentUser().getUid());
-//
-//                                                        HashMap<String, Object> map = new HashMap<>();
-//                                                        map.put("address", uAddress);
-//                                                        map.put("name", uName);
-//                                                        map.put("phone", uPhone);
-//                                                        map.put("email", uEmail);
-//
-//                                                        reference.updateChildren(map).addOnSuccessListener(new OnSuccessListener<Void>() {
-//                                                            @Override
-//                                                            public void onSuccess(Void aVoid) {
-//                                                                Toast.makeText(getApplicationContext(), "Profile updated!", Toast.LENGTH_LONG).show();
-//                                                                doneBtn.setVisibility(View.VISIBLE);
-//                                                                progressBar.setVisibility(View.INVISIBLE);
-//                                                            }
-//                                                        }).addOnFailureListener(new OnFailureListener() {
-//                                                            @Override
-//                                                            public void onFailure(@NonNull Exception e) {
-//                                                                Toast.makeText(getApplicationContext(), "Fail to update profile!", Toast.LENGTH_LONG).show();
-//                                                                doneBtn.setVisibility(View.VISIBLE);
-//                                                                progressBar.setVisibility(View.INVISIBLE);
-//                                                            }
-//                                                        });
-//                                                    }
-//                                                }).addOnFailureListener(new OnFailureListener() {
-//                                            @Override
-//                                            public void onFailure(@NonNull Exception e) {
-//                                                Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG).show();
-//                                            }
-//                                        });
-//                                    }
-//                                });
-//                            }
-//                        });
-//                    }
-//                });
-//            }
-//        }
 
 
     private void checkAndRequestForPermissions() {

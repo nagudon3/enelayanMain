@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -24,7 +25,7 @@ import com.unimas.enelayan2019.Seller.AddProductActivity;
 
 public class AccountActivity extends AppCompatActivity {
     private BottomNavigationView botNav;
-    private TextView logoutButton, manageAcc, regSeller, regFisherman, myPost, addProduct, addWholesale;
+    private TextView logoutButton, manageAcc, regSeller, regFisherman, myPost, addProduct, addWholesale, purchaseList, custPurchaseList;
     private ProgressBar loading;
     FirebaseAuth mAuth;
 
@@ -39,6 +40,8 @@ public class AccountActivity extends AppCompatActivity {
         myPost = (TextView) findViewById(R.id.myPost);
         addProduct = (TextView) findViewById(R.id.addProduct);
         loading = (ProgressBar) findViewById(R.id.loading);
+        purchaseList = (TextView)findViewById(R.id.myPurchase);
+        custPurchaseList = (TextView)findViewById(R.id.custOrderList);
         addWholesale = (TextView) findViewById(R.id.addWholesaleProduct);
 
         addProduct.setOnClickListener(new View.OnClickListener() {
@@ -126,6 +129,7 @@ public class AccountActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE, WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
         if (mAuth.getCurrentUser()!=null){
             final DatabaseReference fishermanReference = FirebaseDatabase.getInstance().getReference().child("Fisherman").child(mAuth.getCurrentUser().getUid());
             fishermanReference.addValueEventListener(new ValueEventListener() {
@@ -139,12 +143,14 @@ public class AccountActivity extends AppCompatActivity {
                             addProduct = (TextView) findViewById(R.id.addProduct);
                             addProduct.setVisibility(View.VISIBLE);
                             addWholesale.setVisibility(View.VISIBLE);
-                            regSeller.setVisibility(View.INVISIBLE);
-                            regFisherman.setVisibility(View.INVISIBLE);
-                            loading.setVisibility(View.INVISIBLE);
+                            regSeller.setVisibility(View.GONE);
+                            regFisherman.setVisibility(View.GONE);
+                            loading.setVisibility(View.GONE);
+                            getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
 
                         }else {
-                            loading.setVisibility(View.INVISIBLE);
+                            loading.setVisibility(View.GONE);
+                            getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
                         }
                     }else
                     {
@@ -159,12 +165,13 @@ public class AccountActivity extends AppCompatActivity {
                                         addWholesale = (TextView) findViewById(R.id.addWholesaleProduct);
                                         addProduct = (TextView) findViewById(R.id.addProduct);
                                         addProduct.setVisibility(View.VISIBLE);
-                                        regSeller.setVisibility(View.INVISIBLE);
-                                        regFisherman.setVisibility(View.INVISIBLE);
-                                        loading.setVisibility(View.INVISIBLE);
-
+                                        regSeller.setVisibility(View.GONE);
+                                        regFisherman.setVisibility(View.GONE);
+                                        loading.setVisibility(View.GONE);
+                                        getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
                                     }else {
-                                        loading.setVisibility(View.INVISIBLE);
+                                        loading.setVisibility(View.GONE);
+                                        getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
                                     }
                                 }
                             }
@@ -174,7 +181,7 @@ public class AccountActivity extends AppCompatActivity {
 
                             }
                         });
-                        loading.setVisibility(View.INVISIBLE);
+                        loading.setVisibility(View.GONE);
                     }
 
                 }

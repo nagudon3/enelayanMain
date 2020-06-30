@@ -2,6 +2,7 @@ package com.unimas.enelayan2019.Model;
 
 public class Cart {
     private String uid;
+    private String cartId;
     private String productName;
     private String productImage;
     private String amountOrdered;
@@ -12,8 +13,9 @@ public class Cart {
     public Cart() {
     }
 
-    public Cart(String uid, String productName, String productImage, String amountOrdered, String price, Boolean isCod, Boolean isPickup) {
+    public Cart(String uid, String cartId, String productName, String productImage, String amountOrdered, String price, Boolean isCod, Boolean isPickup) {
         this.uid = uid;
+        this.cartId = cartId;
         this.productName = productName;
         this.productImage = productImage;
         this.amountOrdered = amountOrdered;
@@ -28,6 +30,14 @@ public class Cart {
 
     public void setUid(String uid) {
         this.uid = uid;
+    }
+
+    public String getCartId() {
+        return cartId;
+    }
+
+    public void setCartId(String cartId) {
+        this.cartId = cartId;
     }
 
     public String getProductName() {

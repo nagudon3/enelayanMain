@@ -26,6 +26,7 @@
             android:textStyle="bold" />
     </LinearLayout>
 
+
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -43,7 +44,6 @@
             android:translationZ="10dp"
             tools:ignore="VectorDrawableCompat" />
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
-
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/postRV"
