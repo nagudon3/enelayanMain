@@ -48,14 +48,12 @@ public class AccountActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 startActivity(new Intent(AccountActivity.this, CustomerPurchaseList.class));
-                Toast.makeText(AccountActivity.this, "Redirecting..", Toast.LENGTH_SHORT).show();
             }
         });
         purchaseList.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 startActivity(new Intent(AccountActivity.this, MyPurchaseActivity.class));
-                Toast.makeText(AccountActivity.this, "Redirecting..", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -144,8 +142,8 @@ public class AccountActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE, WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
         if (mAuth.getCurrentUser()!=null){
+            getWindow().setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE, WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
             final DatabaseReference fishermanReference = FirebaseDatabase.getInstance().getReference().child("Fisherman").child(mAuth.getCurrentUser().getUid());
             fishermanReference.addValueEventListener(new ValueEventListener() {
                 @Override
@@ -193,6 +191,8 @@ public class AccountActivity extends AppCompatActivity {
                                         getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
                                     }
                                 }
+                                getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
+
                             }
 
                             @Override
