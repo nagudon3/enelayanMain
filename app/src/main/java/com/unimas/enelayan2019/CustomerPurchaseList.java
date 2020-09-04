@@ -13,6 +13,7 @@ import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -31,8 +32,9 @@ public class CustomerPurchaseList extends AppCompatActivity {
     private RecyclerView customerPurchaseRV;
     private ArrayList<Purchase> purchaseArrayList;
     private FirebaseDatabase firebaseDatabase;
-    private TextView noItem;
+    private TextView noItem, total;
     private CustomerPurchaseAdapter myPurchaseAdapter;
+    private ImageView backBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,14 +43,26 @@ public class CustomerPurchaseList extends AppCompatActivity {
 
         customerPurchaseRV = findViewById(R.id.custPurchaseRV);
         noItem = findViewById(R.id.noItem);
+        total = findViewById(R.id.total);
+        backBtn = findViewById(R.id.backBtn);
+        backBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(CustomerPurchaseList.this, AccountActivity.class));
+            }
+        });
+
 
         noItem.setVisibility(View.GONE);
+        total.setVisibility(View.GONE);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         linearLayoutManager.setReverseLayout(true);
         linearLayoutManager.setStackFromEnd(true);
         customerPurchaseRV.setLayoutManager(linearLayoutManager);
 
         purchaseArrayList = new ArrayList<>();
+        final double[] totalD = {0.0};
+
 
         firebaseDatabase = FirebaseDatabase.getInstance();
 
@@ -88,9 +102,16 @@ public class CustomerPurchaseList extends AppCompatActivity {
                         myPurchaseAdapter = new CustomerPurchaseAdapter(purchaseArrayList, CustomerPurchaseList.this, callListener, wsListener);
                         customerPurchaseRV.setAdapter(myPurchaseAdapter);
                     }
+                    for (int i = 0; i<purchaseArrayList.size(); i++){
+                        totalD[0] += Double.parseDouble(purchaseArrayList.get(i).getPurchasePrice());
+                    }
+                    total.setVisibility(View.VISIBLE);
+                    String totalString = String.format("%.2f", totalD[0]);
+                    total.setText("Total Sales: RM "+totalString);
 
                 }else {
                     noItem.setVisibility(View.VISIBLE);
+                    total.setVisibility(View.GONE);
                 }
             }
 

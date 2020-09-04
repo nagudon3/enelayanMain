@@ -4,7 +4,6 @@ import com.google.firebase.database.ServerValue;
 
 public class Post {
     private String postKey;
-    private String title;
     private String details;
     private String image;
     private String userId;
@@ -15,8 +14,7 @@ public class Post {
     public Post() {
     }
 
-    public Post(String title, String details, String image, String userId, String userName, String userPics) {
-        this.title = title;
+    public Post(String details, String image, String userId, String userName, String userPics) {
         this.details = details;
         this.image = image;
         this.userId = userId;
@@ -32,14 +30,6 @@ public class Post {
 
     public void setPostKey(String postKey) {
         this.postKey = postKey;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
     }
 
     public String getDetails() {

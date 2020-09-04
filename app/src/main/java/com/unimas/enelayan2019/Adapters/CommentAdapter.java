@@ -65,7 +65,9 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.CommentV
     private String timestampToString(long time){
         Calendar calendar = Calendar.getInstance();
         calendar.setTimeInMillis(time);
-        String date = DateFormat.format("hh:mm", calendar).toString();
-        return date;
+        String date = DateFormat.format("dd/MM/yy", calendar).toString();
+        String clock = DateFormat.format("h:mm aa", calendar).toString();
+        String realDate = date +" at "+ clock;
+        return realDate;
     }
 }

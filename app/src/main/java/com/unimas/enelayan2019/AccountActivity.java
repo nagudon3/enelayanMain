@@ -20,14 +20,17 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.unimas.enelayan2019.Fisherman.AddWholesaleActivity;
 import com.unimas.enelayan2019.Model.Post;
 import com.unimas.enelayan2019.Seller.AddProductActivity;
 
 public class AccountActivity extends AppCompatActivity {
     private BottomNavigationView botNav;
-    private TextView logoutButton, manageAcc, regSeller, regFisherman, myPost, addProduct, addWholesale, purchaseList, custPurchaseList;
+    private TextView logoutButton, manageAcc, regSeller, regFisherman, myPost, addProduct, addWholesale, purchaseList, custPurchaseList, accountType, sales;
     private ProgressBar loading;
     FirebaseAuth mAuth;
+    private long backPressedTime;
+    private Toast backToast;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,12 +40,14 @@ public class AccountActivity extends AppCompatActivity {
         manageAcc = (TextView) findViewById(R.id.manageAcc);
         regSeller = (TextView) findViewById(R.id.regSeller);
         regFisherman = (TextView) findViewById(R.id.regFishermen);
+        sales = (TextView) findViewById(R.id.salesSummary);
         myPost = (TextView) findViewById(R.id.myPost);
         addProduct = (TextView) findViewById(R.id.addProduct);
         loading = (ProgressBar) findViewById(R.id.loading);
         purchaseList = (TextView)findViewById(R.id.myPurchase);
         custPurchaseList = (TextView)findViewById(R.id.custOrderList);
         addWholesale = (TextView) findViewById(R.id.addWholesaleProduct);
+        accountType = (TextView) findViewById(R.id.accountType);
 
         custPurchaseList.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -96,6 +101,19 @@ public class AccountActivity extends AppCompatActivity {
             }
         });
 
+        sales.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent(AccountActivity.this, ReportActivity.class);
+                startActivity(i);
+            }
+        });
+        addWholesale.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(getApplicationContext(), AddWholesaleActivity.class));
+            }
+        });
         mAuth = FirebaseAuth.getInstance();
         botNav = findViewById(R.id.bottomNav);
         botNav.setSelectedItemId(R.id.account);
@@ -158,10 +176,12 @@ public class AccountActivity extends AppCompatActivity {
                             addWholesale.setVisibility(View.VISIBLE);
                             regSeller.setVisibility(View.GONE);
                             regFisherman.setVisibility(View.GONE);
+                            sales.setVisibility(View.VISIBLE);
                             custPurchaseList = (TextView)findViewById(R.id.custOrderList);
                             custPurchaseList.setVisibility(View.VISIBLE);
                             loading.setVisibility(View.GONE);
                             getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
+                            accountType.setText("Fisherman Account");
 
                         }else {
                             loading.setVisibility(View.GONE);
@@ -185,6 +205,8 @@ public class AccountActivity extends AppCompatActivity {
                                         custPurchaseList.setVisibility(View.VISIBLE);
                                         regFisherman.setVisibility(View.GONE);
                                         loading.setVisibility(View.GONE);
+                                        accountType.setText("Seller Account");
+                                        sales.setVisibility(View.VISIBLE);
                                         getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
                                     }else {
                                         loading.setVisibility(View.GONE);
@@ -210,7 +232,27 @@ public class AccountActivity extends AppCompatActivity {
 
                 }
             });
+        }else {
+            startActivity(new Intent(AccountActivity.this, MainActivity.class));
         }
 
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (backPressedTime + 2000 > System.currentTimeMillis()){
+            backToast.cancel();
+            super.onBackPressed();
+            Intent intent = new Intent(Intent.ACTION_MAIN);
+            intent.addCategory(Intent.CATEGORY_HOME);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intent);
+            return;
+        }else {
+            backToast = Toast.makeText(this, "Tap on back button again to exit.", Toast.LENGTH_SHORT);
+            backToast.show();
+        }
+
+        backPressedTime = System.currentTimeMillis();
     }
 }

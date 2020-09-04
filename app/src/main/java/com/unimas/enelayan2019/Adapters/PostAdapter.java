@@ -91,7 +91,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.MyViewHolder> 
     private String timestampToString(long time){
         Calendar calendar = Calendar.getInstance();
         calendar.setTimeInMillis(time);
-        String date = DateFormat.format("dd-MM-yyyy", calendar).toString();
+        String date = DateFormat.format("dd MMMM yyyy hh:mm aa", calendar).toString();
         return date;
     }
 }

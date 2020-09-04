@@ -11,6 +11,7 @@
         android:layout_width="104dp"
         android:layout_height="69dp"
         android:layout_marginTop="10dp"
+        android:layout_marginBottom="20dp"
         android:elevation="20dp"
         android:src="@drawable/account"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -21,27 +22,10 @@
         app:layout_constraintVertical_bias="0.0" />
 
     <EditText
-        android:id="@+id/postTitle"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="10dp"
-        android:layout_marginTop="9dp"
-        android:layout_marginRight="10dp"
-        android:background="@drawable/add_post_style"
-        android:ems="10"
-        android:hint="Post Title"
-        android:inputType="textPersonName"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.2"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/userPics" />
-
-    <EditText
         android:id="@+id/postDetails"
         android:layout_width="match_parent"
         android:layout_height="114dp"
         android:layout_marginLeft="10dp"
-        android:layout_marginTop="20dp"
         android:layout_marginRight="10dp"
         android:background="@drawable/add_post_style"
         android:ems="10"
@@ -51,7 +35,7 @@
         android:paddingLeft="10dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/postTitle" />
+        app:layout_constraintTop_toBottomOf="@+id/userPics" />
 
     <ImageView
         android:id="@+id/postImage"

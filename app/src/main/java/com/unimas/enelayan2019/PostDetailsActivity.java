@@ -92,25 +92,28 @@ public class PostDetailsActivity extends AppCompatActivity {
                 String userId = currentUser.getUid();
                 String userName = currentUser.getDisplayName();
                 String userImage = currentUser.getPhotoUrl().toString();
+                if (comments.isEmpty()){
+                    Toast.makeText(PostDetailsActivity.this, "Comment cannot be empty.", Toast.LENGTH_SHORT).show();
+                    addCommentButton.setVisibility(View.VISIBLE);
+                }else {
+                    final Comment commented = new Comment(comments, userId, userName, userImage);
 
-                final Comment comment = new Comment(comments, userId, userName, userImage);
+                    reference.setValue(commented).addOnSuccessListener(new OnSuccessListener<Void>() {
+                        @Override
+                        public void onSuccess(Void aVoid) {
+                            addCommentButton.setVisibility(View.VISIBLE);
+                            Toast.makeText(getApplicationContext(), "Comment added successfully!", Toast.LENGTH_SHORT).show();
+                            comment.getText().clear();
+                        }
+                    }).addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            addCommentButton.setVisibility(View.VISIBLE);
+                            Toast.makeText(getApplicationContext(), "Fail to add comment.", Toast.LENGTH_SHORT).show();
 
-                reference.setValue(comment).addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void aVoid) {
-                        addCommentButton.setVisibility(View.VISIBLE);
-                        Toast.makeText(getApplicationContext(), "Comment added successfully!", Toast.LENGTH_SHORT).show();
-                        finish();
-                    }
-                }).addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        addCommentButton.setVisibility(View.VISIBLE);
-                        Toast.makeText(getApplicationContext(), "Fail to add comment.", Toast.LENGTH_SHORT).show();
-
-                    }
-                });
-
+                        }
+                    });
+                }
             }
         });
 
@@ -119,7 +122,10 @@ public class PostDetailsActivity extends AppCompatActivity {
     }
 
     private void initComment() {
-        commentView.setLayoutManager(new LinearLayoutManager(this));
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
+        linearLayoutManager.setReverseLayout(true);
+        linearLayoutManager.setStackFromEnd(true);
+        commentView.setLayoutManager(linearLayoutManager);
         DatabaseReference commentReference = database.getReference().child("Comments").child(PostKey);
         commentReference.addValueEventListener(new ValueEventListener() {
             @Override
@@ -144,7 +150,7 @@ public class PostDetailsActivity extends AppCompatActivity {
     private String timestampToString(long time){
         Calendar calendar = Calendar.getInstance();
         calendar.setTimeInMillis(time);
-        String date = DateFormat.format("dd-MM-yyyy", calendar).toString();
+        String date = DateFormat.format("dd MMMM yyyy hh:mm aa", calendar).toString();
         return date;
     }
 }

@@ -59,7 +59,7 @@ public class PostActivity<var> extends AppCompatActivity {
     private FirebaseAuth mAuth;
     private FirebaseUser user;
     private Dialog popAddPost;
-    private EditText postTitle, postDescription;
+    private EditText postDescription;
     private ImageView postImage, addPostButton;
     private CircleImageView userImage;
     private ProgressBar postProgress;
@@ -70,6 +70,8 @@ public class PostActivity<var> extends AppCompatActivity {
     private DatabaseReference reference;
     private ArrayList<Post> postArrayList;
     private String currentUserId;
+    private long backPressedTime;
+    private Toast backToast;
 
 
     @Override
@@ -167,7 +169,6 @@ public class PostActivity<var> extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
         user = mAuth.getCurrentUser();
 
-        postTitle = popAddPost.findViewById(R.id.postTitle);
         selectImageText = popAddPost.findViewById(R.id.selectImageText);
         postDescription = popAddPost.findViewById(R.id.postDetails);
         userImage = popAddPost.findViewById(R.id.userPics);
@@ -189,10 +190,9 @@ public class PostActivity<var> extends AppCompatActivity {
                 addPostButton.setVisibility(View.INVISIBLE);
                 postProgress.setVisibility(View.VISIBLE);
 
-                if (!postTitle.getText().toString().isEmpty()
-                        && !postDescription.toString().isEmpty() && ImageURI !=null){
+                if (!postDescription.toString().isEmpty() && ImageURI !=null){
                     StorageReference storageReference = FirebaseStorage.getInstance().getReference().child("post_images").child(user.getUid());
-                    final StorageReference imageFilePath = storageReference.child(postTitle.getText().toString());
+                    final StorageReference imageFilePath = storageReference.child(FirebaseAuth.getInstance().getCurrentUser().getUid());
                     imageFilePath.putFile(ImageURI).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                         @Override
                         public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
@@ -201,8 +201,7 @@ public class PostActivity<var> extends AppCompatActivity {
                                 public void onSuccess(Uri uri) {
                                     String imageDownloadLink = uri.toString();
 
-                                    Post post = new Post(postTitle.getText().toString(),
-                                            postDescription.getText().toString(),
+                                    Post post = new Post(postDescription.getText().toString(),
                                             imageDownloadLink,
                                             user.getUid(),
                                             user.getDisplayName(),
@@ -287,5 +286,23 @@ public class PostActivity<var> extends AppCompatActivity {
             }
 
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (backPressedTime + 2000 > System.currentTimeMillis()){
+            backToast.cancel();
+            super.onBackPressed();
+            Intent intent = new Intent(Intent.ACTION_MAIN);
+            intent.addCategory(Intent.CATEGORY_HOME);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intent);
+            return;
+        }else {
+            backToast = Toast.makeText(this, "Tap on back button again to exit.", Toast.LENGTH_SHORT);
+            backToast.show();
+        }
+
+        backPressedTime = System.currentTimeMillis();
     }
 }

@@ -90,7 +90,7 @@
             android:id="@+id/wsButton"
             android:layout_width="30dp"
             android:layout_height="30dp"
-            android:background="@drawable/whatsapp"
+            android:background="@drawable/ws"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"/>
 

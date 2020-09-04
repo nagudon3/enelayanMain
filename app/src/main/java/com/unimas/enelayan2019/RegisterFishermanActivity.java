@@ -107,26 +107,29 @@ public class RegisterFishermanActivity extends AppCompatActivity {
             final FirebaseDatabase fishermanDatabase = FirebaseDatabase.getInstance();
             final DatabaseReference userReference = userDatabase.getReference().child("Users").child(user.getUid());
             final DatabaseReference fishermanReference = fishermanDatabase.getReference().child("Fisherman").child(user.getUid());
+            final DatabaseReference sellerReference = fishermanDatabase.getReference().child("Seller").child(user.getUid());
             final String fImage = mAuth.getCurrentUser().getPhotoUrl().toString();
 
             userReference.addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                     users = dataSnapshot.getValue(Users.class);
-                    String fName = users.getName().toString();
-                    String fPhone = users.getPhone().toString();
-                    String fAddress = users.getAddress().toString();
+                    final String fName = users.getName().toString();
+                    final String fPhone = users.getPhone().toString();
+                    final String fAddress = users.getAddress().toString();
 
                     fisherman = new Fisherman(mAuth.getUid(), fName, fLicense, fImage, fArea, fPhone, fAddress, fYears, approvalStatus);
                     //tambah seller
                     fishermanReference.setValue(fisherman).addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {
-                            if (task.isSuccessful()){
+                            if (task.isSuccessful()) {
                                 Toast.makeText(getApplicationContext(), "Your application will be processed", Toast.LENGTH_SHORT).show();
+
                                 progressBar.setVisibility(View.INVISIBLE);
                                 submit.setVisibility(View.VISIBLE);
-                            }else {
+
+                            } else {
                                 Toast.makeText(getApplicationContext(), "Unsuccessful", Toast.LENGTH_SHORT).show();
                             }
                         }

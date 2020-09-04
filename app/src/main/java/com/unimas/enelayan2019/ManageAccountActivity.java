@@ -167,8 +167,8 @@ public class ManageAccountActivity extends AppCompatActivity {
                                                 Toast.makeText(getApplicationContext(), "Profile updated!", Toast.LENGTH_LONG).show();
                                                 doneBtn.setVisibility(View.VISIBLE);
                                                 progressBar.setVisibility(View.INVISIBLE);
-                                                Intent intent = new Intent(ManageAccountActivity.this, AccountActivity.class);
-                                                startActivity(intent);
+                                                startActivity(getIntent());
+
                                             }
                                         }).addOnFailureListener(new OnFailureListener() {
                                             @Override
@@ -176,8 +176,8 @@ public class ManageAccountActivity extends AppCompatActivity {
                                                 Toast.makeText(getApplicationContext(), "Fail to update profile!", Toast.LENGTH_LONG).show();
                                                 doneBtn.setVisibility(View.VISIBLE);
                                                 progressBar.setVisibility(View.INVISIBLE);
-                                                Intent intent = new Intent(ManageAccountActivity.this, AccountActivity.class);
-                                                startActivity(intent);
+                                                startActivity(getIntent());
+
                                             }
                                         });
                                     }
@@ -187,7 +187,8 @@ public class ManageAccountActivity extends AppCompatActivity {
                     });
                 }
             });
-        }else {
+        }
+        else {
             DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference().child("Users");
             databaseReference.child(currentUser.getUid());
 
@@ -212,8 +213,8 @@ public class ManageAccountActivity extends AppCompatActivity {
                                 Toast.makeText(getApplicationContext(), "Profile updated!", Toast.LENGTH_LONG).show();
                                 doneBtn.setVisibility(View.VISIBLE);
                                 progressBar.setVisibility(View.INVISIBLE);
-                                Intent intent = new Intent(ManageAccountActivity.this, AccountActivity.class);
-                                startActivity(intent);
+                                startActivity(getIntent());
+
                             }
                         }).addOnFailureListener(new OnFailureListener() {
                             @Override
@@ -221,8 +222,8 @@ public class ManageAccountActivity extends AppCompatActivity {
                                 Toast.makeText(getApplicationContext(), "Fail to update profile!", Toast.LENGTH_LONG).show();
                                 doneBtn.setVisibility(View.VISIBLE);
                                 progressBar.setVisibility(View.INVISIBLE);
-                                Intent intent = new Intent(ManageAccountActivity.this, AccountActivity.class);
-                                startActivity(intent);
+                                startActivity(getIntent());
+
                             }
                         });
 

@@ -165,6 +165,8 @@ public class ProductDetailsActivity extends AppCompatActivity{
                         Toast.makeText(ProductDetailsActivity.this, "Quantity selected cannot be more than available quantity."+parsedAmount[0], Toast.LENGTH_SHORT).show();
                     }else if (isCod.isChecked() && isPickup.isChecked()){
                         Toast.makeText(ProductDetailsActivity.this, "Pick only one payment method!", Toast.LENGTH_SHORT).show();
+                    }else if (!isCod.isChecked() && !isPickup.isChecked()){
+                        Toast.makeText(ProductDetailsActivity.this, "Please select your payment method.", Toast.LENGTH_SHORT).show();
                     }else {
                         DatabaseReference cartRef = database.getReference().child("Cart").child(FirebaseAuth.getInstance().getUid()).push();
                         String cartId = cartRef.getKey();

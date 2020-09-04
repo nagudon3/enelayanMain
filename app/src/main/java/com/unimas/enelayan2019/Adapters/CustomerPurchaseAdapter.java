@@ -51,19 +51,6 @@ public class CustomerPurchaseAdapter extends RecyclerView.Adapter<CustomerPurcha
         holder.orderAmount.setText(purchaseList.get(position).getAmountPurchased()+" KG");
         holder.paymentMethod.setText(purchaseList.get(position).getPaymentMethod());
         Glide.with(mContext).load(purchaseList.get(position).getProductImage()).into(holder.productImage);
-//        holder.callButton.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                if (ContextCompat.checkSelfPermission(mContext, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED){
-//                    ActivityCompat.requestPermissions(mContext, new String[] {Manifest.permission.CALL_PHONE}, 1);
-//                }else {
-//                    String custPhoneNumber = "tel:" + purchaseList.get(position).getCustomerPhone();
-//                    Intent intent = new Intent(Intent.ACTION_CALL);
-//                    intent.setData(Uri.parse(custPhoneNumber));
-//                    mContext.startActivity(intent);
-//                }
-//            }
-//        });
     }
 
     @Override

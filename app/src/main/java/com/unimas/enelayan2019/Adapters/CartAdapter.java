@@ -7,12 +7,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.unimas.enelayan2019.CartActivity;
+import com.unimas.enelayan2019.CartDeleteActivity;
 import com.unimas.enelayan2019.Model.Cart;
 import com.unimas.enelayan2019.Model.Product;
 import com.unimas.enelayan2019.Product.ProductDetailsActivity;
@@ -38,7 +40,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.CardViewHolder
     }
 
     @Override
-    public void onBindViewHolder(@NonNull CardViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull CardViewHolder holder, final int position) {
         holder.productName.setText(cartList.get(position).getProductName());
         double priceRounded = Double.parseDouble(cartList.get(position).getPrice());
         holder.orderPrice.setText("RM "+String.format("%.2f", priceRounded));
@@ -47,14 +49,12 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.CardViewHolder
         cartList.get(position).getPickup();
 
         if (cartList.get(position).getCod() == true){
-            holder.paymentMethod.setText("Cash on Delivery (COD)");
+            holder.paymentMethod.setText("COD");
         }else if (cartList.get(position).getPickup() == true){
             holder.paymentMethod.setText("Self pick-up");
         }
 
         Glide.with(mContext).load(cartList.get(position).getProductImage()).into(holder.productImage);
-
-
     }
 
     @Override
@@ -77,6 +77,11 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.CardViewHolder
             deleteButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
+                    Intent goToDetails = new Intent(mContext, CartDeleteActivity.class);
+                    int position = getAdapterPosition();
+
+                    goToDetails.putExtra("cartId", cartList.get(position).getCartId());
+                    mContext.startActivity(goToDetails);
                 }
             });
         }

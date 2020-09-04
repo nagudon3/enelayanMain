@@ -1,78 +1,109 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
+<androidx.cardview.widget.CardView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:background="@color/colorDark"
-    android:layout_margin="10dp"
+    app:cardCornerRadius="10dp"
+    app:cardElevation="10dp"
+    android:layout_margin="5dp"
     android:padding="10dp"
     android:layout_height="wrap_content">
 
-
-    <de.hdodenhof.circleimageview.CircleImageView
-        android:id="@+id/accountImage"
-        android:layout_width="70dp"
-        android:layout_height="70dp"
-        android:background="@drawable/account_blue" />
-
-    <TextView
-        android:id="@+id/accountName"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_above="@id/postDetailsView"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="true"
-        android:layout_marginStart="17dp"
-        android:layout_marginLeft="17dp"
-        android:layout_marginEnd="28dp"
-        android:layout_marginRight="28dp"
-        android:layout_marginBottom="40dp"
-        android:layout_toEndOf="@+id/accountImage"
-        android:layout_toRightOf="@+id/accountImage"
-        android:text="Mohammad Nazrul"
-        android:textColor="@color/colorText"
-        android:textSize="20dp" />
-
-    <TextView
-        android:id="@+id/time"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_above="@id/postDetailsView"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="true"
-        android:layout_marginStart="17dp"
-        android:layout_marginLeft="17dp"
-        android:layout_marginEnd="28dp"
-        android:layout_marginRight="28dp"
-        android:layout_marginBottom="10dp"
-        android:layout_toEndOf="@+id/accountImage"
-        android:layout_toRightOf="@+id/accountImage"
-        android:text="16/06/2020"
-        android:textColor="@color/colorText"
-        android:textSize="15dp" />
-
-    <TextView
-        android:id="@+id/postDetailsView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/accountImage"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentLeft="true"
-        android:layout_marginStart="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginTop="21dp"
-        android:text="Mohammad Nazrul"
-        android:textColor="@color/colorText"
-        android:textSize="20dp" />
-
-    <ImageView
-        android:id="@+id/postImageView"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="250dp"
-        android:layout_below="@+id/postDetailsView"
-        android:layout_marginTop="41dp"
-        android:background="@color/colorText" />
+        android:padding="10dp"
+        android:background="@color/colorDark"
+        android:layout_height="match_parent">
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/accountImage"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:background="@drawable/account_blue"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
+        <TextView
+            android:id="@+id/accountName"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_above="@id/postDetailsView"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginBottom="1dp"
+            android:layout_toEndOf="@+id/accountImage"
+            android:layout_toRightOf="@+id/accountImage"
+            android:text="Mohammad Nazrul"
+            android:textColor="@color/colorText"
+            android:textSize="20dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/accountImage"
+            app:layout_constraintTop_toTopOf="parent" />
 
-</RelativeLayout>
+        <TextView
+            android:id="@+id/time"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_above="@id/postDetailsView"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginTop="20dp"
+            android:layout_toEndOf="@+id/accountImage"
+            android:layout_toRightOf="@+id/accountImage"
+            android:text="16/06/2020"
+            android:textColor="@color/colorText"
+            android:textSize="15dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toEndOf="@+id/accountImage"
+            app:layout_constraintTop_toBottomOf="@+id/accountName" />
+
+        <TextView
+            android:id="@+id/postDetailsView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/accountImage"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentLeft="true"
+            android:text="Mohammad Nazrul"
+            android:layout_marginTop="10dp"
+            android:textColor="@color/colorText"
+            android:textSize="20dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/accountImage" />
+
+        <ImageView
+            android:id="@+id/postImageView"
+            android:layout_width="match_parent"
+            android:layout_marginTop="10dp"
+            android:layout_height="250dp"
+            android:layout_below="@+id/postDetailsView"
+            android:background="@color/colorText"
+            app:layout_constraintTop_toBottomOf="@+id/postDetailsView"
+            tools:layout_editor_absoluteX="10dp" />
+
+        <ImageView
+            android:id="@+id/deletePost"
+            android:layout_width="30dp"
+            android:clickable="true"
+            android:layout_marginTop="10dp"
+            android:layout_height="30dp"
+            android:background="@drawable/delete_button"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/postImageView" />
+
+        <Button
+            android:id="@+id/editPost"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:clickable="true"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/edit"
+            app:layout_constraintEnd_toStartOf="@+id/deletePost"
+            android:layout_marginRight="10dp"
+            app:layout_constraintTop_toBottomOf="@+id/postImageView" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.cardview.widget.CardView>

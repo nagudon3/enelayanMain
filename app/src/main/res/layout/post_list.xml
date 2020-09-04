@@ -1,19 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
+<androidx.cardview.widget.CardView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:background="@color/colorDark"
-    android:layout_margin="10dp"
+    app:cardCornerRadius="10dp"
+    app:cardElevation="10dp"
+    android:layout_margin="5dp"
     android:padding="10dp"
-    android:layout_height="wrap_content">
+    android:layout_height="330dp">
 
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:padding="10dp"
+        android:background="@color/colorDark"
+        android:layout_height="match_parent">
 
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/accountImage"
-        android:layout_width="70dp"
-        android:layout_height="70dp"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
         android:background="@drawable/account_blue" />
 
     <TextView
@@ -32,7 +38,7 @@
         android:layout_toRightOf="@+id/accountImage"
         android:text="Mohammad Nazrul"
         android:textColor="@color/colorText"
-        android:textSize="20dp" />
+        android:textSize="17dp" />
 
     <TextView
         android:id="@+id/time"
@@ -61,18 +67,18 @@
         android:layout_alignParentLeft="true"
         android:layout_marginStart="8dp"
         android:layout_marginLeft="8dp"
-        android:layout_marginTop="21dp"
+        android:layout_marginTop="10dp"
         android:text="Mohammad Nazrul"
         android:textColor="@color/colorText"
-        android:textSize="20dp" />
+        android:textSize="17dp" />
 
     <ImageView
         android:id="@+id/postImageView"
         android:layout_width="match_parent"
         android:layout_height="250dp"
         android:layout_below="@+id/postDetailsView"
-        android:layout_marginTop="41dp"
-        android:background="@color/colorText" />
+        android:layout_marginTop="10dp"
+        android:background="@color/colorDark" />
+    </RelativeLayout>
 
-
-</RelativeLayout>
+</androidx.cardview.widget.CardView>

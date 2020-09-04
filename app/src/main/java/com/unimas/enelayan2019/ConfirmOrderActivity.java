@@ -22,16 +22,17 @@ public class ConfirmOrderActivity extends AppCompatActivity {
         backBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(getApplicationContext(), CartActivity.class));
                 finish();
+                startActivity(new Intent(ConfirmOrderActivity.this, CartActivity.class));
+
             }
         });
 
         doneButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(getApplicationContext(), CartActivity.class));
                 finish();
+                startActivity(new Intent(ConfirmOrderActivity.this, CartActivity.class));
             }
         });
     }

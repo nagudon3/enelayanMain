@@ -5,8 +5,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -28,12 +30,21 @@ public class MyPurchaseActivity extends AppCompatActivity {
     private FirebaseDatabase firebaseDatabase;
     private TextView noItem;
     private MyPurchaseAdapter myPurchaseAdapter;
+    private ImageView backBtn;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_purchase);
         myPurchaseRV = findViewById(R.id.myPurchaseRV);
         noItem = findViewById(R.id.noItem);
+        backBtn = findViewById(R.id.backBtn);
+        backBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(MyPurchaseActivity.this, AccountActivity.class));
+            }
+        });
 
         noItem.setVisibility(View.GONE);
 
@@ -43,7 +54,6 @@ public class MyPurchaseActivity extends AppCompatActivity {
         myPurchaseRV.setLayoutManager(linearLayoutManager);
 
         purchaseArrayList = new ArrayList<>();
-
         firebaseDatabase = FirebaseDatabase.getInstance();
 
         final DatabaseReference cartRef= FirebaseDatabase.getInstance().getReference().child("Purchase");

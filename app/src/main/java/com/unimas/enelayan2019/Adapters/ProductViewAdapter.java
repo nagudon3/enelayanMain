@@ -5,6 +5,8 @@ import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -23,14 +25,16 @@ import com.unimas.enelayan2019.R;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ProductViewAdapter extends RecyclerView.Adapter<ProductViewAdapter.MyViewHolder> {
+public class ProductViewAdapter extends RecyclerView.Adapter<ProductViewAdapter.MyViewHolder> implements Filterable {
 
     Context mContext;
     List<Product> productList;
+    List<Product> productFiltered;
 
     public ProductViewAdapter(Context mContext, List<Product> productList) {
         this.mContext = mContext;
         this.productList = productList;
+        this.productFiltered = productList;
     }
 
     @NonNull
@@ -42,19 +46,56 @@ public class ProductViewAdapter extends RecyclerView.Adapter<ProductViewAdapter.
 
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
-        holder.productName.setText(productList.get(position).getProductName());
-        double pricePerKg = Double.parseDouble(productList.get(position).getProductPricePerKg());
+        holder.productName.setText(productFiltered.get(position).getProductName());
+        double pricePerKg = Double.parseDouble(productFiltered.get(position).getProductPricePerKg());
         holder.productPrice.setText("RM "+String.format("%.2f", pricePerKg)+" /KG");
-        Glide.with(mContext).load(productList.get(position).getProductImage()).into(holder.productImage);
+        Glide.with(mContext).load(productFiltered.get(position).getProductImage()).into(holder.productImage);
+
+        String fCategory = productFiltered.get(position).getProductCategory();
+        if (fCategory.equals("Wholesale")){
+            holder.wholesale.setVisibility(View.VISIBLE);
+        }
     }
 
     @Override
     public int getItemCount() {
-        return productList.size();
+        return productFiltered.size();
+    }
+
+    @Override
+    public Filter getFilter() {
+        return new Filter() {
+            @Override
+            protected FilterResults performFiltering(CharSequence charSequence) {
+                String key = charSequence.toString();
+
+                if (key.isEmpty()){
+                    productFiltered = productList;
+                }else {
+                    List<Product> IsFilter = new ArrayList<>();
+                    for (Product row: productList){
+                        if (row.getProductName().toLowerCase().contains(key.toLowerCase())){
+                            IsFilter.add(row);
+                        }
+                    }
+                    productFiltered = IsFilter;
+                }
+
+                FilterResults filterResults = new FilterResults();
+                filterResults.values = productFiltered;
+                return filterResults;
+            }
+
+            @Override
+            protected void publishResults(CharSequence charSequence, FilterResults filterResults) {
+                productFiltered = (List<Product>) filterResults.values;
+                notifyDataSetChanged();
+            }
+        };
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder{
-        TextView productName, productPrice;
+        TextView productName, productPrice, wholesale;
         ImageView productImage;
         CardView cardView;
         public MyViewHolder(@NonNull View itemView) {
@@ -63,26 +104,28 @@ public class ProductViewAdapter extends RecyclerView.Adapter<ProductViewAdapter.
             productImage = itemView.findViewById(R.id.productImage);
             productPrice = itemView.findViewById(R.id.productPricePerKg);
             cardView = itemView.findViewById(R.id.productCV);
+            wholesale = itemView.findViewById(R.id.wholesale);
 
+            wholesale.setVisibility(View.GONE);
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     Intent goToDetails = new Intent(mContext, ProductDetailsActivity.class);
                     int position = getAdapterPosition();
 
-                    goToDetails.putExtra("sellerName", productList.get(position).getSellerName());
-                    goToDetails.putExtra("sellerId", productList.get(position).getSellerId());
-                    goToDetails.putExtra("sellerImage", productList.get(position).getSellerImage());
-                    goToDetails.putExtra("sellingArea", productList.get(position).getSellingArea());
-                    goToDetails.putExtra("sellerPhone", productList.get(position).getSellerPhone());
-                    goToDetails.putExtra("productImage", productList.get(position).getProductImage());
-                    goToDetails.putExtra("productName", productList.get(position).getProductName());
-                    goToDetails.putExtra("productPrice", productList.get(position).getProductPricePerKg());
-                    goToDetails.putExtra("productAmount", productList.get(position).getAmountAvailable());
-                    goToDetails.putExtra("productId", productList.get(position).getProductId());
-                    goToDetails.putExtra("isCod", productList.get(position).getCod());
-                    goToDetails.putExtra("isSelfPickup", productList.get(position).getPickup());
-                    goToDetails.putExtra("productCategory", productList.get(position).getProductCategory());
+                    goToDetails.putExtra("sellerName", productFiltered.get(position).getSellerName());
+                    goToDetails.putExtra("sellerId", productFiltered.get(position).getSellerId());
+                    goToDetails.putExtra("sellerImage", productFiltered.get(position).getSellerImage());
+                    goToDetails.putExtra("sellingArea", productFiltered.get(position).getSellingArea());
+                    goToDetails.putExtra("sellerPhone", productFiltered.get(position).getSellerPhone());
+                    goToDetails.putExtra("productImage", productFiltered.get(position).getProductImage());
+                    goToDetails.putExtra("productName", productFiltered.get(position).getProductName());
+                    goToDetails.putExtra("productPrice", productFiltered.get(position).getProductPricePerKg());
+                    goToDetails.putExtra("productAmount", productFiltered.get(position).getAmountAvailable());
+                    goToDetails.putExtra("productId", productFiltered.get(position).getProductId());
+                    goToDetails.putExtra("isCod", productFiltered.get(position).getCod());
+                    goToDetails.putExtra("isSelfPickup", productFiltered.get(position).getPickup());
+                    goToDetails.putExtra("productCategory", productFiltered.get(position).getProductCategory());
                     mContext.startActivity(goToDetails);
                 }
             });

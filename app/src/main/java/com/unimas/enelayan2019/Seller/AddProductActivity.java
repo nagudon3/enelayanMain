@@ -102,6 +102,8 @@ public class AddProductActivity extends AppCompatActivity implements AdapterView
         arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         category.setAdapter(arrayAdapter);
 
+        progressBar.setVisibility(View.GONE);
+
         backBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

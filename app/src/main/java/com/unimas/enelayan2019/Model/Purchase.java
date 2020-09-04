@@ -1,5 +1,7 @@
 package com.unimas.enelayan2019.Model;
 
+import com.google.firebase.database.ServerValue;
+
 public class Purchase {
     private String purchaseId;
     private String productId;
@@ -13,6 +15,7 @@ public class Purchase {
     private String customerAddress;
     private String customerName;
     private String paymentMethod;
+    private Object purchaseTime;
 
     public Purchase() {
     }
@@ -32,6 +35,7 @@ public class Purchase {
         this.customerAddress = customerAddress;
         this.customerName = customerName;
         this.paymentMethod = paymentMethod;
+        this.purchaseTime = ServerValue.TIMESTAMP;
     }
 
     public String getPurchaseId() {
@@ -128,5 +132,13 @@ public class Purchase {
 
     public void setPaymentMethod(String paymentMethod) {
         this.paymentMethod = paymentMethod;
+    }
+
+    public Object getPurchaseTime() {
+        return purchaseTime;
+    }
+
+    public void setPurchaseTime(Object purchaseTime) {
+        this.purchaseTime = purchaseTime;
     }
 }

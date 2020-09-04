@@ -2,14 +2,20 @@ package com.unimas.enelayan2019;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -49,6 +55,9 @@ public class CartActivity extends AppCompatActivity {
     private Button checkOutButton;
     private FirebaseDatabase firebaseDatabase;
     private TextView total, noCart;
+    private ProgressBar progressBar;
+    private long backPressedTime;
+    private Toast backToast;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,6 +67,8 @@ public class CartActivity extends AppCompatActivity {
         checkOutButton = findViewById(R.id.checkoutButton);
         total = findViewById(R.id.total);
         noCart = findViewById(R.id.noCart);
+        progressBar = findViewById(R.id.progressBar);
+
 
         noCart.setVisibility(View.GONE);
         total.setVisibility(View.GONE);
@@ -75,10 +86,11 @@ public class CartActivity extends AppCompatActivity {
         final DatabaseReference cartRef= FirebaseDatabase.getInstance().getReference().child("Cart").child(FirebaseAuth.getInstance().getUid());
         cartRef.orderByChild("uid").equalTo(FirebaseAuth.getInstance().getUid()).addValueEventListener(new ValueEventListener() {
             @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+            public void onDataChange(@NonNull final DataSnapshot dataSnapshot) {
                 if (dataSnapshot.exists()){
+                    progressBar.setVisibility(View.GONE);
                     for (DataSnapshot dataSnapshot1:dataSnapshot.getChildren()){
-                        Cart cart = dataSnapshot1.getValue(Cart.class);
+                        final Cart cart = dataSnapshot1.getValue(Cart.class);
                         cartArrayList.add(cart);
 
                         cartAdapter = new CartAdapter(cartArrayList, CartActivity.this);
@@ -90,8 +102,10 @@ public class CartActivity extends AppCompatActivity {
                     total.setVisibility(View.VISIBLE);
                     String totalString = String.format("%.2f", totalD[0]);
                     total.setText("Total Amount: RM "+totalString);
+                    checkOutButton.setVisibility(View.VISIBLE);
 
                 }else {
+                    progressBar.setVisibility(View.GONE);
                     noCart.setVisibility(View.VISIBLE);
                     checkOutButton.setVisibility(View.GONE);
                     total.setVisibility(View.GONE);
@@ -109,7 +123,7 @@ public class CartActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 final String[] method = {""};
-                    DatabaseReference userRef = firebaseDatabase.getReference().child("Users").child(FirebaseAuth.getInstance().getUid());
+                DatabaseReference userRef = firebaseDatabase.getReference().child("Users").child(FirebaseAuth.getInstance().getUid());
                     userRef.addValueEventListener(new ValueEventListener() {
                         @Override
                         public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -119,7 +133,7 @@ public class CartActivity extends AppCompatActivity {
                             String customerAddress = users.getAddress();
 
                             for (int i = 0; i<cartArrayList.size(); i++){
-                                DatabaseReference purchaseRef = firebaseDatabase.getReference().child("Purchase").push();
+                                final DatabaseReference purchaseRef = firebaseDatabase.getReference().child("Purchase").push();
                                 String purchaseId = purchaseRef.getKey();
                                 if (cartArrayList.get(i).getCod() == true){
                                     method[0] = "COD";
@@ -140,6 +154,8 @@ public class CartActivity extends AppCompatActivity {
                                         customerName,
                                         method[0]
                                 );
+
+
                                 purchaseRef.setValue(purchase).addOnCompleteListener(new OnCompleteListener<Void>() {
                                     @Override
                                     public void onComplete(@NonNull Task<Void> task) {
@@ -156,6 +172,44 @@ public class CartActivity extends AppCompatActivity {
 
                         }
                     });
+
+                    //Updating product amount
+
+                for (int i = 0; i<cartArrayList.size(); i++){
+                    final DatabaseReference productRef = firebaseDatabase.getReference().child("Products").child(cartArrayList.get(i).getProductId());
+                    final int finalI = i;
+                    productRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                            Product product = dataSnapshot.getValue(Product.class);
+                            double amountAvailable = Double.parseDouble(product.getAmountAvailable());
+                            double amountPurchased = Double.parseDouble(cartArrayList.get(finalI).getAmountOrdered());
+                            double amountLeft = amountAvailable - amountPurchased;
+
+                            String amountLeftS = String.valueOf(amountLeft);
+
+                            HashMap<String, Object> map = new HashMap<>();
+                            map.put("amountAvailable", amountLeftS);
+
+
+                            productRef.updateChildren(map).addOnSuccessListener(new OnSuccessListener<Void>() {
+                                @Override
+                                public void onSuccess(Void aVoid) {
+                                    finish();
+                                }
+                            }).addOnFailureListener(new OnFailureListener() {
+                                @Override
+                                public void onFailure(@NonNull Exception e) {
+                                }
+                            });;
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                        }
+                    });
+                }
 
             }
         });
@@ -187,5 +241,23 @@ public class CartActivity extends AppCompatActivity {
                 return false;
             }
         });
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (backPressedTime + 2000 > System.currentTimeMillis()){
+            backToast.cancel();
+            super.onBackPressed();
+            Intent intent = new Intent(Intent.ACTION_MAIN);
+            intent.addCategory(Intent.CATEGORY_HOME);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intent);
+            return;
+        }else {
+            backToast = Toast.makeText(this, "Tap on back button again to exit.", Toast.LENGTH_SHORT);
+            backToast.show();
+        }
+
+        backPressedTime = System.currentTimeMillis();
     }
 }

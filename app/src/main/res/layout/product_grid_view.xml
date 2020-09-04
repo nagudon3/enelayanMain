@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="160dp"
     android:id="@+id/productCV"
     android:stretchMode="none"
@@ -9,22 +10,37 @@
     xmlns:cardview="http://schemas.android.com/apk/res-auto"
     cardview:cardCornerRadius="10dp"
     android:layout_margin="4dp">
-    <RelativeLayout
-        android:layout_width="wrap_content"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
         <TextView
+            android:id="@+id/productName"
             android:layout_width="match_parent"
             android:layout_height="40dp"
-            android:id="@+id/productName"
-            android:text="Ikan Keli"
-            android:elevation="10dp"
-            android:textSize="18dp"
-            android:textAllCaps="true"
-            android:gravity="center"
-            android:textColor="@color/colorText"
             android:background="@color/colorDark"
-            />
+            android:elevation="10dp"
+            android:gravity="center"
+            android:text="Ikan Keli"
+            android:textAllCaps="true"
+            android:textColor="@color/colorText"
+            android:textSize="18dp"
+            cardview:layout_constraintEnd_toEndOf="parent"
+            cardview:layout_constraintStart_toStartOf="parent"
+            cardview:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/wholesale"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Wholesale"
+            android:gravity="center"
+            android:background="#9C0C62E3"
+            android:textColor="@color/colorText"
+            android:elevation="20dp"
+            android:textSize="20dp"
+            cardview:layout_constraintBottom_toTopOf="@+id/productPricePerKg"
+            cardview:layout_constraintTop_toBottomOf="@+id/productName" />
 
         <ImageView
             android:id="@+id/productImage"
@@ -33,20 +49,26 @@
             android:layout_alignParentTop="true"
             android:layout_alignParentBottom="true"
             android:background="@drawable/logo"
-            android:scaleType="centerCrop" />
+            android:scaleType="centerCrop"
+            tools:layout_editor_absoluteX="0dp"
+            tools:layout_editor_absoluteY="0dp" />
 
         <TextView
+            android:id="@+id/productPricePerKg"
             android:layout_width="match_parent"
             android:layout_height="40dp"
-            android:id="@+id/productPricePerKg"
-            android:text="RM 20.00/KG"
-            android:translationZ="2dp"
-            android:textSize="18dp"
-            android:background="@color/colorPrimary"
             android:layout_alignParentBottom="true"
-            android:textAllCaps="true"
+            android:background="@color/colorPrimary"
             android:gravity="center"
-            android:textColor="@color/colorText"/>
-    </RelativeLayout>
+            android:text="RM 20.00/KG"
+            android:textAllCaps="true"
+            android:textColor="@color/colorText"
+            android:textSize="18dp"
+            android:translationZ="2dp"
+            cardview:layout_constraintBottom_toBottomOf="@+id/productImage"
+            cardview:layout_constraintEnd_toEndOf="parent"
+            cardview:layout_constraintStart_toStartOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.cardview.widget.CardView>
